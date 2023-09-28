@@ -1208,6 +1208,7 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "Npgsql >= 7.0.6",
       "RGR.Dal >= 1.0.0"
     ]
   },
@@ -1253,6 +1254,12 @@
     "frameworks": {
       "net7.0": {
         "targetAlias": "net7.0",
+        "dependencies": {
+          "Npgsql": {
+            "target": "Package",
+            "version": "[7.0.6, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
