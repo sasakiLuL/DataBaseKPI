@@ -1,16 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RGR.Dal.ORM;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GAppoi.Models.Entities
 {
     public class Coach
     {
-        public int CoachId { get; set; }
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public string Description { get; set; } = string.Empty;
-        public byte[] EmploymentDate { get; set; } = null!;
-        public int GymId { get; set; }
+        [DataNames("coach_id")] public int CoachId { get; set; }
+        [DataNames("first_name")] public string FirstName { get; set; } = null!;
+        [DataNames("last_name")] public string LastName { get; set; } = null!;
+        [DataNames("description")] public string Description { get; set; } = string.Empty;
+        [DataNames("employment_date")] public byte[] EmploymentDate { get; set; } = null!;
+        [DataNames("gym_id")] public int GymId { get; set; }
         public Gym Gym { get; set; } = null;
         public IEnumerable<Class> Classes { get; set; } = new List<Class>();
     }
