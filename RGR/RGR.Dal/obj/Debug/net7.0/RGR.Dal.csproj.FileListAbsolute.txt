@@ -1,0 +1,12 @@
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\bin\Debug\net7.0\RGR.Dal.deps.json
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\bin\Debug\net7.0\RGR.Dal.dll
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\bin\Debug\net7.0\RGR.Dal.pdb
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\obj\Debug\net7.0\RGR.Dal.csproj.AssemblyReference.cache
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\obj\Debug\net7.0\RGR.Dal.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\obj\Debug\net7.0\RGR.Dal.AssemblyInfoInputs.cache
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\obj\Debug\net7.0\RGR.Dal.AssemblyInfo.cs
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\obj\Debug\net7.0\RGR.Dal.csproj.CoreCompileInputs.cache
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\obj\Debug\net7.0\RGR.Dal.dll
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\obj\Debug\net7.0\refint\RGR.Dal.dll
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\obj\Debug\net7.0\RGR.Dal.pdb
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.Dal\obj\Debug\net7.0\ref\RGR.Dal.dll
