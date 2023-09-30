@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GAppoi.Models.Entities
+namespace RGR.Dal.Entities
 {
     public class Coach
     {

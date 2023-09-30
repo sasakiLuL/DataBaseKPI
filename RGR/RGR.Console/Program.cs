@@ -1,2 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using RGR.Dal.Entities;
+using RGR.Dal.ORM;
+
+DbSet<User> test = new DbSet<User>();
+
+test.Where(e => e.FirstName == "LOL");

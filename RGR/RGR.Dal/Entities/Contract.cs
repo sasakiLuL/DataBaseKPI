@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System;
 using RGR.Dal.ORM;
 
-namespace GAppoi.Models.Entities
+namespace RGR.Dal.Entities
 {
     public class Contract
     {

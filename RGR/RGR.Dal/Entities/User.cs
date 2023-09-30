@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using RGR.Dal.ORM;
 
-namespace GAppoi.Models.Entities
+namespace RGR.Dal.Entities
 {
     public class User
     {
