@@ -1,6 +1,6 @@
 ﻿namespace RGR.Dal.Repos.Base
 {
-    public interface IRepo<T> : IDisposable
+    public interface IRepo<T>
     {
         int Add(T entity);
         int AddRange(IEnumerable<T> entities);

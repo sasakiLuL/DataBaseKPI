@@ -5,32 +5,6 @@ namespace RGR.Dal.Repos.Base
 {
     public abstract class BaseRepo<T> : IRepo<T> where T : new()
     {
-        private readonly bool _disposedConnection;
-        private readonly bool _disposedAdapter;
-        private bool _isDisposed;
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_isDisposed)
-                return;
-            if (disposing)
-            {
-                if (_disposedConnection)
-                    _connection.Dispose();
-                if (_disposedAdapter)
-                    _adapter.Dispose();
-            }
-            _isDisposed = true;
-        }
-        ~BaseRepo()
-        {
-            Dispose(false);
-        }
-
         protected DataSet _set;
         protected NpgsqlConnection _connection;
         protected NpgsqlDataAdapter _adapter;

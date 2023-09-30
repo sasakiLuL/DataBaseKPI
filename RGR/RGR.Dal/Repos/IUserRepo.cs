@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RGR.Dal.Repos
 {
-    internal class IUserRepo
+    public class IUserRepo
     {
     }
 }
