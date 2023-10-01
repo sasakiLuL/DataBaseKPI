@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RGR.Dal.Repos
+namespace RGR.Dal
 {
-    public class IUserRepo
+    public class ICommand
     {
     }
 }
