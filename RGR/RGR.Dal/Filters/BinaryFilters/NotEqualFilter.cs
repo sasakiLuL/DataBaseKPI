@@ -4,7 +4,7 @@
     {
         internal NotEqualFilter(TLeft right, TRight left) : base(right, left)
         {
-            FilterString = "!=";
+            _filterString = "!=";
         }
     }
 }

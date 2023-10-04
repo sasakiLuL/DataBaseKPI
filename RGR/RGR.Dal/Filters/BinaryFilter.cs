@@ -4,7 +4,12 @@
     {
         public TLeft Right { get; set; }
         public TRight Left { get; set; }
-        public string FilterString { get; protected set; }
+        protected static string _filterString;
+        static BinaryFilter()
+        {
+            _filterString = string.Empty;
+        }
+        public string FilterString { get { return _filterString; } }
         public BinaryFilter(TLeft right, TRight left)
         {
             Right = right;

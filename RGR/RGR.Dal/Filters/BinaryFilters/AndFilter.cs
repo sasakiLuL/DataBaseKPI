@@ -4,7 +4,7 @@
     {
         internal AndFilter(TLeft right, TRight left) : base(right, left)
         {
-            FilterString = "AND";
+            _filterString = "AND";
         }
     }
 }

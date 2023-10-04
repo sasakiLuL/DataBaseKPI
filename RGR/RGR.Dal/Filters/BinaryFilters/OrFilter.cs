@@ -4,7 +4,7 @@
     {
         internal OrFilter(TLeft right, TRight left) : base(right, left)
         {
-            FilterString = "OR";
+            _filterString = "OR";
         }
     }
 }

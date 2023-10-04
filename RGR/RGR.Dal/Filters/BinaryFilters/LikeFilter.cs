@@ -4,7 +4,7 @@
     {
         internal LikeFilter(TLeft right, TRight left) : base(right, left)
         {
-            FilterString = "LIKE";
+            _filterString = "LIKE";
         }
     }
 }

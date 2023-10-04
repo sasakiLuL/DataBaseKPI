@@ -1,6 +1,6 @@
 ﻿using Npgsql;
 using NpgsqlTypes;
-using RGR.Dal.QueryFilters;
+using RGR.Dal.Filters;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -158,23 +158,14 @@ namespace RGR.Dal
 
             return newQuery;
         }
-        public IQuery<TEntity> Where<TFilter>(Expression<Func<TEntity, TFilter>> predicate) where TFilter : QueryFilter
+        public IQuery<TEntity> Where<TFilter>(Expression<Func<TEntity, TFilter>> predicate) where TFilter : IFilter
         {
-            Type entityType = typeof(TEntity);
-
-            var reducedExp = predicate.Body.Reduce() ?? 
+            List<Expression> filterArguments = (predicate.Body as MethodCallExpression)?.Arguments.ToList() ??
                 throw new Exception("a");
 
-            //if (reducedExp.CanReduce)
+            MethodCallExpression methodCallExpression = (predicate.Body as MethodCallExpression);
 
-
-            //var columnName = leftArgument.Type.GetCustomAttribute<ColumnAttribute>();
-
-            
-            
-           // var operation = predicate.Body.ToString().Replace();
-
-            //var members = getMembersList(arguments);
+            //typeof(IFilter).GetProperty("FilterString").GetValue(predicate.);
 
             return default;
         }
