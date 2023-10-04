@@ -1,11 +1,10 @@
 ﻿using Npgsql;
 using NpgsqlTypes;
-using System.Collections.Generic;
+using RGR.Dal.QueryFilters;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
 
 namespace RGR.Dal
 {
@@ -159,13 +158,23 @@ namespace RGR.Dal
 
             return newQuery;
         }
-        public IQuery<TEntity> Where(Expression<Func<TEntity, bool>> predicate)
+        public IQuery<TEntity> Where<TFilter>(Expression<Func<TEntity, TFilter>> predicate) where TFilter : QueryFilter
         {
             Type entityType = typeof(TEntity);
 
-            var arguments = getArgumentsExpressionsList(selector);
+            var reducedExp = predicate.Body.Reduce() ?? 
+                throw new Exception("a");
 
-            var members = getMembersList(arguments);
+            //if (reducedExp.CanReduce)
+
+
+            //var columnName = leftArgument.Type.GetCustomAttribute<ColumnAttribute>();
+
+            
+            
+           // var operation = predicate.Body.ToString().Replace();
+
+            //var members = getMembersList(arguments);
 
             return default;
         }
@@ -178,6 +187,41 @@ namespace RGR.Dal
         {
             return expressions.ToList().ConvertAll(e => (e as MemberExpression)?.Member ??
                 throw new Exception("Sequence contains no elements"));
+        }
+        private string ToSqlOperator(ExpressionType type)
+        {
+            return type switch
+            {
+                ExpressionType.Equal => "=",
+                ExpressionType.GreaterThan => ">",
+                ExpressionType.LessThan => "<",
+                ExpressionType.GreaterThanOrEqual => ">=",
+                ExpressionType.LessThanOrEqual => "<=",
+                ExpressionType.NotEqual => "!=",
+                ExpressionType.Not => "NOT",
+                ExpressionType.AndAlso => "AND",
+                ExpressionType.OrElse => "OR",
+                _ => throw new Exception("No allowed expression type")
+            };
+        }
+        private string CreateWhereSqString(BinaryExpression predicate)
+        {
+            if (predicate.Right is BinaryExpression)
+                return CreateWhereSqString((BinaryExpression)predicate.Right);
+
+            if (predicate.Left is BinaryExpression)
+                return CreateWhereSqString((BinaryExpression)predicate.Right);
+
+            string columnName = (predicate.Right as MemberExpression)?.Member?
+                .GetCustomAttribute<ColumnAttribute>()?.Name ?? 
+                throw new Exception("b");
+
+            if (predicate.NodeType == ExpressionType.Call)
+            {
+
+            }
+
+            return null;
         }
     }
 }
