@@ -4,13 +4,23 @@ using RGR.Dal;
 using RGR.Dal.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
-var res = Select((Gym e) => new { e.GymName, e.PhoneNumber, e.Email });
 
-Console.ReadLine();
+NpgsqlConnection connection = new("host=localhost;port=5433;database=appoi_db;user id=postgres;password=pass12345");
 
+DbSet<Gym> gyms = new(connection);
+
+var g = gyms.Query().Select(e => new { e.GymId, e.GymName })
+                    .Where(e => e.GymName.StartsWith('c'))
+                    .Execute();
+
+g.ToList().ForEach(e=> Console.WriteLine($"{e}"));
+
+return;
 static IList<TResult> Select<TEntity, TResult>(Expression<Func<TEntity, TResult>> selector)
 {
     var connection = new NpgsqlConnection("host=localhost;port=5433;database=appoi_db;user id=postgres;password=pass12345");
@@ -56,20 +66,3 @@ static IList<TResult> Select<TEntity, TResult>(Expression<Func<TEntity, TResult>
 
     return result;
 }
-//TableDefinition<Gym> gyms = new TableDefinition<Gym>(connection);
-
-//var result = gyms.Query().Select(e => new { e.GymName, e.GymType }).Execute();
-
-//result.ForEach(e => Console.WriteLine($"{e.GymName}, {e.GymType}"));
-
-
-//var command = new CommandBuilder().From(context.Users).Join(context.Gyms).On()
-
-//var data = context.Users.LeftJoin<Gyms>((u, g) => u.gym_id == g.gym_id)
-//          .Select(e => new { e.FirstName, e.LastName })
-//
-//          .Where(e => e.Sex == 1)
-//          .OrderBy(e => e.UserId)
-//          .Execute();
-
-//Table Users = new CommandBuilder<User>();
