@@ -2,9 +2,7 @@
 {
     public class NotEqualFilter<TLeft, TRight> : BinaryFilter<TLeft, TRight>
     {
-        internal NotEqualFilter(TLeft right, TRight left) : base(right, left)
-        {
-            _filterString = "!=";
-        }
+        public override string FilterString => "!=";
+        internal NotEqualFilter(TLeft right, TRight left) : base(right, left) { }
     }
 }

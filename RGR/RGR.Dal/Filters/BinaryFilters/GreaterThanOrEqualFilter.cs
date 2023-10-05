@@ -2,9 +2,7 @@
 {
     public class GreaterThanOrEqualFilter<TLeft, TRight> : BinaryFilter<TLeft, TRight>
     {
-        internal GreaterThanOrEqualFilter(TLeft right, TRight left) : base(right, left)
-        {
-            _filterString = ">=";
-        }
+        public override string FilterString => ">=";
+        internal GreaterThanOrEqualFilter(TLeft right, TRight left) : base(right, left) { }
     }
 }

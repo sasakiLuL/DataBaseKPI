@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Filters\BinaryFilters\GreaterThanFilter.cs" />
+    <Compile Remove="Filters\BinaryFilters\GreaterThanOrEqualFilter.cs" />
+    <Compile Remove="Filters\BinaryFilters\LessThanFilter.cs" />
+    <Compile Remove="Filters\BinaryFilters\LessThanOrEqualFilter.cs" />
+    <Compile Remove="Filters\BinaryFilters\LikeFilter.cs" />
+    <Compile Remove="Filters\BinaryFilters\NotEqualFilter.cs" />
+    <Compile Remove="Filters\BinaryFilters\OrFilter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Npgsql" Version="7.0.6" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />
   </ItemGroup>

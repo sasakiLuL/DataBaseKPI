@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using NpgsqlTypes;
+using RGR.Dal.Entities;
 using RGR.Dal.Filters;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
@@ -15,6 +16,7 @@ namespace RGR.Dal
         private string _dataDestinationString;
         private string _filteringDataString;
         private NpgsqlCommand _commandInstance;
+        private Type _finalType;
         private Query()
         {
             Connection = null;
@@ -57,13 +59,11 @@ namespace RGR.Dal
                     if (!isAnon)
                     {
                         outEntities?.Add((TEntity)constructor.Invoke(null));
-
-                        for (int i = 0; i < (int)reader.FieldCount; i++)
+                        for (int i = 0; i < reader.FieldCount; i++)
                         {
                             MemberInfo? member = typeof(TEntity).GetMembers()
                                 .Where(p => p.GetCustomAttribute<ColumnAttribute>()?.Name == reader.GetName(i))
                                 .FirstOrDefault();
-
                             switch (member)
                             {
                                 case PropertyInfo prop:
@@ -80,15 +80,12 @@ namespace RGR.Dal
                     else
                     {
                         List<object?> rows = new List<object?>();
-
-                        for (int i = 0; i < (int)reader.FieldCount; i++)
+                        for (int i = 0; i < reader.FieldCount; i++)
                         {
                             rows.Add(reader.GetValue(i));
                         }
-
                         outEntities?.Add((TEntity)constructor.Invoke(rows.ToArray()));
                     }
-
                 }
             }
 
@@ -129,13 +126,9 @@ namespace RGR.Dal
         public IQuery<TResult> Select<TResult>(Expression<Func<TEntity, TResult>> selector)
         {
             Type entityType = typeof(TEntity);
-
             var arguments = getArgumentsExpressionsList(selector);
-
             var members = getMembersList(arguments);
-
             var columns = members.ConvertAll(e => e.GetCustomAttribute<ColumnAttribute>()?.Name ?? e.Name);
-
             var parametersNames = columns.ConvertAll(e => $"{e.ToUpper()}");
 
             foreach (var (colName, paramName) in columns.Zip(parametersNames))
@@ -144,12 +137,13 @@ namespace RGR.Dal
                 {
                     Value = colName
                 };
-                _commandInstance.Parameters.Add(param);
+                if (_commandInstance.Parameters.ToList().Find(e => e.Equals(param)) == null) _commandInstance.Parameters.Add(param);
             }
 
             _queringDataString += $"SELECT {parametersNames.Aggregate((columns, next) => columns += $", {next}")} ";
 
             Query<TResult> newQuery = new();
+
             newQuery.Connection = Connection;
             newQuery._dataDestinationString = _dataDestinationString;
             newQuery._filteringDataString = _filteringDataString;
@@ -160,14 +154,29 @@ namespace RGR.Dal
         }
         public IQuery<TEntity> Where<TFilter>(Expression<Func<TEntity, TFilter>> predicate) where TFilter : IFilter
         {
-            List<Expression> filterArguments = (predicate.Body as MethodCallExpression)?.Arguments.ToList() ??
+            var argumnets = (predicate.Body as MethodCallExpression)?.Arguments.ToList() ??
                 throw new Exception("a");
 
-            MethodCallExpression methodCallExpression = (predicate.Body as MethodCallExpression);
+            if (argumnets.First() is not MemberExpression)
+                throw new Exception("b");
 
-            //typeof(IFilter).GetProperty("FilterString").GetValue(predicate.);
+            var columnName = (argumnets.First() as MemberExpression).Member;
 
-            return default;
+            //NpgsqlParameter param = new(columnName.ToUpper(), NpgsqlDbType.Varchar)
+            //{
+            //    Value = columnName
+            //};
+            //if (_commandInstance.Parameters.ToList().Find(e => e.Equals(param)) == null)
+            //    _commandInstance.Parameters.Add(param);
+
+            //var a = typeof(TFilter).GetMethod("GetFilteringString").Invoke(null, 
+            //    new object[] { columnName.ToUpper(),
+            //        typeof(TFilter).GetProperty("FilterOperatorString").GetValue(null),
+            //        argumnets.Skip(1).ToArray() } );
+
+            //_filteringDataString += $"WHERE {a}";
+
+            return this;
         }
         private List<Expression> getArgumentsExpressionsList<TResult>(Expression<Func<TEntity, TResult>> expression)
         {

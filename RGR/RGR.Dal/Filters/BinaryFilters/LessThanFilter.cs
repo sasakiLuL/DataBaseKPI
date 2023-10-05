@@ -2,9 +2,7 @@
 {
     public class LessThanFilter<TLeft, TRight> : BinaryFilter<TLeft, TRight>
     {
-        internal LessThanFilter(TLeft right, TRight left) : base(right, left)
-        {
-            _filterString = "<";
-        }
+        public override string FilterString => "<";
+        internal LessThanFilter(TLeft right, TRight left) : base(right, left) { }
     }
 }

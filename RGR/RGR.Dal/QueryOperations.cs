@@ -5,13 +5,13 @@ namespace RGR.Dal
 {
     public static class QueryOperations
     {
-        public static IFilter Equal<TLeft, TRight>(TLeft left, TRight right)
+        public static EqualFilter<TLeft, TRight> Equal<TLeft, TRight>(TLeft left, TRight right)
         {
             return new EqualFilter<TLeft, TRight>(left, right);
         }
-        public static IFilter Or<TLeft, TRight>(TLeft left, TRight right)
+        public static AndFilter<TLeft, TRight> Or<TLeft, TRight>(TLeft left, TRight right)
         {
-            return new OrFilter<TLeft, TRight>(left, right);
+            return new AndFilter<TLeft, TRight>(left, right);
         }
     }
 }

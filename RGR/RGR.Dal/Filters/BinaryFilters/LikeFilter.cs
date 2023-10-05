@@ -2,9 +2,7 @@
 {
     public class LikeFilter<TLeft, TRight> : BinaryFilter<TLeft, TRight>
     {
-        internal LikeFilter(TLeft right, TRight left) : base(right, left)
-        {
-            _filterString = "LIKE";
-        }
+        public override string FilterString => "LIKE";
+        internal LikeFilter(TLeft right, TRight left) : base(right, left) { }
     }
 }

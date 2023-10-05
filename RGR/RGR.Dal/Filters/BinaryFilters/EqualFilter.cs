@@ -1,10 +1,8 @@
 ﻿namespace RGR.Dal.Filters.BinaryFilters
 {
-    public class EqualFilter<TLeft, TRight> : BinaryFilter<TLeft, TRight>
+    public class EqualFilter<TLeft, TRight> : BinaryFilter<TLeft, TRight>, IFilter
     {
-        internal EqualFilter(TLeft right, TRight left) : base(right, left)
-        {
-            _filterString = "=";
-        }
+        public EqualFilter(TLeft right, TRight left) : base(right, left) {}
+        public static string FilterOperatorString => "=";
     }
 }

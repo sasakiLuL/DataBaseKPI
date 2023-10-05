@@ -1,16 +1,10 @@
 ﻿namespace RGR.Dal.Filters
 {
-    public abstract class BinaryFilter<TLeft, TRight> : IFilter
+    public abstract class BinaryFilter<TLeft, TRight>
     {
-        public TLeft Right { get; set; }
-        public TRight Left { get; set; }
-        protected static string _filterString;
-        static BinaryFilter()
-        {
-            _filterString = string.Empty;
-        }
-        public string FilterString { get { return _filterString; } }
-        public BinaryFilter(TLeft right, TRight left)
+        public TLeft Left { get; set; }
+        public TRight Right { get; set; }
+        public BinaryFilter(TLeft left, TRight right)
         {
             Right = right;
             Left = left;
