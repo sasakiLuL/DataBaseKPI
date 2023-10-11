@@ -8,8 +8,6 @@
 
         void Update(int id, T entity);
 
-        void Find(int id);
-
         IEnumerable<T> FindAll();
     }
 }

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
+using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
 
 namespace RGR.Dal.Repos.BaseRepo
 {
@@ -24,6 +25,7 @@ namespace RGR.Dal.Repos.BaseRepo
         {
             ClassType = typeof(T);
             Connection = connection;
+            Key = string.Empty;
             Columns = new List<string>();
             Properties = new Dictionary<string, PropertyInfo>();
 
@@ -104,12 +106,39 @@ namespace RGR.Dal.Repos.BaseRepo
 
         public void Update(int id, T entity)
         {
-            throw new NotImplementedException();
-        }
+            NpgsqlCommand command = new NpgsqlCommand()
+            {
+                CommandType = CommandType.Text,
+                Connection = Connection,
+            };
 
-        public void Find(int id)
-        {
-            throw new NotImplementedException();
+            Columns.ForEach((column) => command.Parameters.Add(new NpgsqlParameter()
+            {
+                ParameterName = "@PARAM_" + column.ToUpper(),
+                Value = Properties[column].GetValue(entity)
+            }));
+            command.Parameters.Add(new NpgsqlParameter()
+            {
+                ParameterName = "@PARAM_ID",
+                Value = id
+            });
+
+            string variablesString = AggregateStringWithSeparators(Columns.Zip(command.Parameters), (pair) => $"{pair.First} = {pair.Second.ParameterName}");
+
+            command.CommandText = $"UPDATE {TableName} SET {variablesString} WHERE {Key} = @PARAM_ID;";
+
+            Connection.Open();
+
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            Connection.Close();
         }
 
         public IEnumerable<T> FindAll()
