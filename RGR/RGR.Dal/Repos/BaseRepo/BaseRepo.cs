@@ -2,26 +2,29 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RGR.Dal.Repos.BaseRepo
 {
     public class BaseRepo<T> : IRepo<T> where T : class, new()
     {
         protected Type ClassType { get; private set; }
+
         protected NpgsqlConnection Connection { get; private set; }
-        public List<string> Keys { get; private set; }
+
+        public string Key { get; private set; }
+
         public List<string> Columns { get; private set; }
+
         public string TableName { get; private set; }
+
         protected Dictionary<string, PropertyInfo> Properties { get; private set; }
+
         public BaseRepo(NpgsqlConnection connection)
         {
             ClassType = typeof(T);
             Connection = connection;
             Columns = new List<string>();
-            Keys = new List<string>();
             Properties = new Dictionary<string, PropertyInfo>();
 
             TableName = ClassType.GetCustomAttribute<TableAttribute>()?.Name ?? ClassType.Name;
@@ -33,11 +36,12 @@ namespace RGR.Dal.Repos.BaseRepo
                 Properties.Add(column, property);
 
                 if (property.GetCustomAttribute<KeyAttribute>() != null)
-                    Keys.Add(column);
+                    Key = column;
                 else
                     Columns.Add(column);
             }
         }
+
         public void Add(T entity)
         {
             NpgsqlCommand command = new NpgsqlCommand()
@@ -70,14 +74,32 @@ namespace RGR.Dal.Repos.BaseRepo
             
             Connection.Close();
         }
-        public void AddRange(IEnumerable<T> entities)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            NpgsqlCommand command = new NpgsqlCommand()
+            {
+                CommandType = CommandType.Text,
+                Connection = Connection,
+                CommandText = $"DELETE FROM {TableName} WHERE {Key} = @PARAM_ID;"
+            };
+            command.Parameters.Add(new NpgsqlParameter() {
+                ParameterName = "@PARAM_ID",
+                Value = id
+            });
+
+            Connection.Open();
+
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            Connection.Close();
         }
 
         public void Update(int id, T entity)
@@ -94,6 +116,7 @@ namespace RGR.Dal.Repos.BaseRepo
         {
             throw new NotImplementedException();
         }
+
         private string AggregateStringWithSeparators<TOut>(IEnumerable<TOut> list, Func<TOut, string> convertor)
         {
             string outStr = list.SkipLast(1).Aggregate(string.Empty, (str, next) => str += convertor(next) + ", ");
