@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Folder Include="DalException\" />
+    <Folder Include="Entities\" />
   </ItemGroup>
 
 </Project>
