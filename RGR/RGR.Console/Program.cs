@@ -7,5 +7,8 @@ NpgsqlConnection npgsqlConnection = new NpgsqlConnection()
     ConnectionString = "host=localhost;port=5433;database=appoi_db;user id=postgres;password=pass12345"
 };
 
-BaseRepo<Class> classRepo = new(npgsqlConnection);
+BaseRepo<User> usersRepo = new(npgsqlConnection);
 
+var users = usersRepo.FindAll();
+
+users.ToList().ForEach(Console.WriteLine);

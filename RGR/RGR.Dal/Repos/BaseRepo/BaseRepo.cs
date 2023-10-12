@@ -7,7 +7,7 @@ using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
 
 namespace RGR.Dal.Repos.BaseRepo
 {
-    public class BaseRepo<T> : IRepo<T> where T : class, new()
+    public class BaseRepo<TEntity> : IRepo<TEntity> where TEntity : class, new()
     {
         protected Type ClassType { get; private set; }
 
@@ -23,7 +23,7 @@ namespace RGR.Dal.Repos.BaseRepo
 
         public BaseRepo(NpgsqlConnection connection)
         {
-            ClassType = typeof(T);
+            ClassType = typeof(TEntity);
             Connection = connection;
             Key = string.Empty;
             Columns = new List<string>();
@@ -44,7 +44,7 @@ namespace RGR.Dal.Repos.BaseRepo
             }
         }
 
-        public void Add(T entity)
+        public void Add(TEntity entity)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
@@ -104,7 +104,7 @@ namespace RGR.Dal.Repos.BaseRepo
             Connection.Close();
         }
 
-        public void Update(int id, T entity)
+        public void Update(int id, TEntity entity)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
@@ -141,11 +141,37 @@ namespace RGR.Dal.Repos.BaseRepo
             Connection.Close();
         }
 
-        public IEnumerable<T> FindAll()
+        public IEnumerable<TEntity> FindAll()
         {
-            throw new NotImplementedException();
-        }
+            IList<TEntity> entities = new List<TEntity>();
 
+            NpgsqlCommand command = new NpgsqlCommand()
+            {
+                CommandType = CommandType.Text,
+                Connection = Connection,
+                CommandText = $"SELECT * FROM {TableName};"
+            };
+
+            Connection.Open();
+
+            using NpgsqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
+
+                Columns.ForEach(column => 
+                {
+                    Properties[column].SetValue(entity, reader[column]);
+                });
+
+                entities.Add(entity);
+            }
+
+            Connection.Close();
+
+            return entities;
+        }
         private string AggregateStringWithSeparators<TOut>(IEnumerable<TOut> list, Func<TOut, string> convertor)
         {
             string outStr = list.SkipLast(1).Aggregate(string.Empty, (str, next) => str += convertor(next) + ", ");

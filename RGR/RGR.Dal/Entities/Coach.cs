@@ -20,7 +20,7 @@ namespace RGR.Dal.Entities
         public string Description { get; set; } = string.Empty;
 
         [Column("employment_date")]
-        public DateOnly EmploymentDate { get; set; }
+        public DateTime EmploymentDate { get; set; }
 
         [Column("gym_id")]
         public int GymId { get; set; }
