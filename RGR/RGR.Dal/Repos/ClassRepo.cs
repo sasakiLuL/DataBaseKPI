@@ -1,7 +1,6 @@
 ﻿using Npgsql;
 using RGR.Dal.Entities;
 using RGR.Dal.Repos.BaseRepo;
-using System.Data;
 
 namespace RGR.Dal.Repos
 {

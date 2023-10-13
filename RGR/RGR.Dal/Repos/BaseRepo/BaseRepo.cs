@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
-using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
 
 namespace RGR.Dal.Repos.BaseRepo
 {
