@@ -11,4 +11,4 @@ BaseRepo<User> usersRepo = new(npgsqlConnection);
 
 var users = usersRepo.FindAll();
 
-users.ToList().ForEach(Console.WriteLine);
+users.ToList().ForEach(e => Console.WriteLine($"{e.FirstName}\t{e.LastName}"));

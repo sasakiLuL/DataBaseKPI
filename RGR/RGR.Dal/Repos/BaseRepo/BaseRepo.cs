@@ -172,6 +172,7 @@ namespace RGR.Dal.Repos.BaseRepo
 
             return entities;
         }
+
         private string AggregateStringWithSeparators<TOut>(IEnumerable<TOut> list, Func<TOut, string> convertor)
         {
             string outStr = list.SkipLast(1).Aggregate(string.Empty, (str, next) => str += convertor(next) + ", ");
