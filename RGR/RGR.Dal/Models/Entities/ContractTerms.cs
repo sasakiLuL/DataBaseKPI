@@ -20,6 +20,6 @@ namespace RGR.Dal.Models.Entities
         public string Description { get; set; } = string.Empty;
 
         [Column("gym_id")]
-        public int GymId { get; set; }
+        public long GymId { get; set; }
     }
 }

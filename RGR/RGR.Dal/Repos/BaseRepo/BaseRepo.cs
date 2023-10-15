@@ -198,7 +198,7 @@ namespace RGR.Dal.Repos.BaseRepo
 
                 Columns.ForEach(column =>
                 {
-                    Properties[column].SetValue(entity, reader[column]);
+                    Properties[column].SetValue(entity, reader[column] != DBNull.Value ? reader[column] : null);
                 });
 
                 entities.Add(entity);

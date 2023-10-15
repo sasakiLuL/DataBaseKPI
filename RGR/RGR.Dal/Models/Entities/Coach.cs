@@ -23,7 +23,7 @@ namespace RGR.Dal.Models.Entities
         public DateTime EmploymentDate { get; set; }
 
         [Column("gym_id")]
-        public int GymId { get; set; }
+        public long GymId { get; set; }
 
     }
 }

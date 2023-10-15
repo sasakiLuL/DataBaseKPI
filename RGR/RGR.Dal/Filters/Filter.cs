@@ -53,5 +53,29 @@ namespace RGR.Dal.Filters
             QueryString += $"LIKE {param.ParameterName}";
             return this;
         }
+
+        public static Filter<TEntity> operator |(Filter<TEntity> first, Filter<TEntity> second)
+        {
+            Filter<TEntity> outVariable = new Filter<TEntity>();
+            outVariable.ColumnName = first.ColumnName;
+            outVariable.Parameters.AddRange(first.Parameters);
+            outVariable.Parameters.AddRange(second.Parameters);
+            outVariable.QueryString = first.QueryString;
+            outVariable.QueryString += " OR " + second.QueryString;
+
+            return outVariable;
+        }
+
+        public static Filter<TEntity> operator &(Filter<TEntity> first, Filter<TEntity> second)
+        {
+            Filter<TEntity> outVariable = new Filter<TEntity>();
+            outVariable.ColumnName = first.ColumnName;
+            outVariable.Parameters.AddRange(first.Parameters);
+            outVariable.Parameters.AddRange(second.Parameters);
+            outVariable.QueryString = first.QueryString;
+            outVariable.QueryString += " AND " + second.QueryString;
+
+            return outVariable;
+        }
     }
 }

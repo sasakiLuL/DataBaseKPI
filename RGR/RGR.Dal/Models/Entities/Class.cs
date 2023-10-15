@@ -14,12 +14,12 @@ namespace RGR.Dal.Models.Entities
         public int MaxParticipants { get; set; }
 
         [Column("start_time")] 
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
         [Column("end_time")] 
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
         [Column("course_id")] 
-        public int CourseId { get; set; }
+        public long CourseId { get; set; }
     }
 }

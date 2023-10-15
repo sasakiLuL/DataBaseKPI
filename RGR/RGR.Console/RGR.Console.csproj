@@ -4,6 +4,11 @@
     <ProjectReference Include="..\RGR.Dal\RGR.Dal.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controlers\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>

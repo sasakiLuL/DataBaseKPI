@@ -8,10 +8,10 @@ NpgsqlConnection npgsqlConnection = new NpgsqlConnection()
     ConnectionString = "host=localhost;port=5433;database=appoi_db;user id=postgres;password=pass12345"
 };
 
-BaseRepo<User> usersRepo = new(npgsqlConnection);
+BaseRepo<Class> classesRepo = new(npgsqlConnection);
 
-var a = usersRepo.Find(Filter<User>.Value(u => u.FirstName).Like("W%"));
+var a = classesRepo.FindAll();
 
-a.ToList().ForEach(e => Console.WriteLine(e.FirstName));
+a.ToList().ForEach(e => Console.WriteLine(e.ClassId));
 
 return;
