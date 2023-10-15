@@ -6,9 +6,9 @@ namespace RGR.Dal.Repos.BaseRepo
     {
         void Add(TEntity entity);
 
-        void Delete(int id);
+        void Delete(long id);
 
-        void Update(int id, TEntity entity);
+        void Update(long id, TEntity entity);
 
         IEnumerable<TEntity> Find(Filter<TEntity> filter);
 

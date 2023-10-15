@@ -77,7 +77,7 @@ namespace RGR.Dal.Repos.BaseRepo
             Connection.Close();
         }
 
-        public void Delete(int id)
+        public void Delete(long id)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
@@ -104,7 +104,7 @@ namespace RGR.Dal.Repos.BaseRepo
             Connection.Close();
         }
 
-        public void Update(int id, TEntity entity)
+        public void Update(long id, TEntity entity)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
@@ -200,6 +200,8 @@ namespace RGR.Dal.Repos.BaseRepo
                 {
                     Properties[column].SetValue(entity, reader[column] != DBNull.Value ? reader[column] : null);
                 });
+
+                Properties[Key].SetValue(entity, reader[Key]);
 
                 entities.Add(entity);
             }
