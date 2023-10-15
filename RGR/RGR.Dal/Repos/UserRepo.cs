@@ -1,5 +1,5 @@
 ﻿using Npgsql;
-using RGR.Dal.Entities;
+using RGR.Dal.Models.Entities;
 using RGR.Dal.Repos.BaseRepo;
 
 namespace RGR.Dal.Repos

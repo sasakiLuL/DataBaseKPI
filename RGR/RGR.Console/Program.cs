@@ -1,12 +1,7 @@
 ﻿using Npgsql;
-using RGR.Dal;
-using RGR.Dal.Entities;
+using RGR.Dal.Models.Entities;
 using RGR.Dal.Filters;
 using RGR.Dal.Repos.BaseRepo;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.InteropServices;
 
 NpgsqlConnection npgsqlConnection = new NpgsqlConnection()
 {

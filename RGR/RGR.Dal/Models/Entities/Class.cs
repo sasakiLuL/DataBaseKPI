@@ -1,8 +1,7 @@
-﻿using NpgsqlTypes;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RGR.Dal.Entities
+namespace RGR.Dal.Models.Entities
 {
     [Table("classes")]
     public class Class

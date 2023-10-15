@@ -12,8 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DalException\" />
-    <Folder Include="Entities\" />
+    <Folder Include="Models\Entities\" />
   </ItemGroup>
 
 </Project>
