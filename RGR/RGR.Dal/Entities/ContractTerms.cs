@@ -8,7 +8,7 @@ namespace RGR.Dal.Entities
     {
         [Key]
         [Column("contract_terms_id")]
-        public int ContractTermId { get; set; }
+        public long ContractTermId { get; set; }
 
         [Column("contract_name")]
         public string ContractName { get; set; } = null!;

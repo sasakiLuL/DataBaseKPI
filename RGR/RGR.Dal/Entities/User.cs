@@ -8,7 +8,7 @@ namespace RGR.Dal.Entities
     {
         [Key]
         [Column("user_id")]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         [Column("first_name")]
         public string FirstName { get; set; } = null!;

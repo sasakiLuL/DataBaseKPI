@@ -1,6 +1,12 @@
 ﻿using Npgsql;
+using RGR.Dal;
 using RGR.Dal.Entities;
+using RGR.Dal.Filters;
 using RGR.Dal.Repos.BaseRepo;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 NpgsqlConnection npgsqlConnection = new NpgsqlConnection()
 {
@@ -9,6 +15,8 @@ NpgsqlConnection npgsqlConnection = new NpgsqlConnection()
 
 BaseRepo<User> usersRepo = new(npgsqlConnection);
 
-var users = usersRepo.FindAll();
+var a = usersRepo.Find(Filter<User>.Value(u => u.FirstName).Like("W%"));
 
-users.ToList().ForEach(e => Console.WriteLine($"{e.FirstName}\t{e.LastName}"));
+a.ToList().ForEach(e => Console.WriteLine(e.FirstName));
+
+return;

@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using RGR.Dal.Filters;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
@@ -140,6 +141,42 @@ namespace RGR.Dal.Repos.BaseRepo
             Connection.Close();
         }
 
+        public IEnumerable<TEntity> Find(Filter<TEntity> filter)
+        {
+            IList<TEntity> entities = new List<TEntity>();
+
+            NpgsqlCommand command = new NpgsqlCommand()
+            {
+                CommandType = CommandType.Text,
+                Connection = Connection,
+                CommandText = $"SELECT * FROM {TableName} WHERE {filter.QueryString};"
+            };
+
+            command.Parameters.AddRange(filter.Parameters.ToArray());
+
+            Connection.Open();
+
+            using NpgsqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
+
+                Columns.ForEach(column => 
+                {
+                    Properties[column].SetValue(entity, reader[column]);
+                });
+
+                Properties[Key].SetValue(entity, reader[Key]);
+
+                entities.Add(entity);
+            }
+
+            Connection.Close();
+
+            return entities;
+        }
+
         public IEnumerable<TEntity> FindAll()
         {
             IList<TEntity> entities = new List<TEntity>();
@@ -159,7 +196,7 @@ namespace RGR.Dal.Repos.BaseRepo
             {
                 TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
 
-                Columns.ForEach(column => 
+                Columns.ForEach(column =>
                 {
                     Properties[column].SetValue(entity, reader[column]);
                 });

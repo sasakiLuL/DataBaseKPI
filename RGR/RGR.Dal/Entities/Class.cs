@@ -9,7 +9,7 @@ namespace RGR.Dal.Entities
     {
         [Key]
         [Column("class_id")]
-        public int? ClassId { get; set; }
+        public long ClassId { get; set; }
 
         [Column("max_participants")] 
         public int MaxParticipants { get; set; }

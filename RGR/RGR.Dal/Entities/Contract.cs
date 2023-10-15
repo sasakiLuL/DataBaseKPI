@@ -8,7 +8,7 @@ namespace RGR.Dal.Entities
     {
         [Key]
         [Column("contract_id")]
-        public int ContractId { get; set; }
+        public long ContractId { get; set; }
 
         [Column("transaction_time")]
         public DateTime TransactionTime { get; set; }
