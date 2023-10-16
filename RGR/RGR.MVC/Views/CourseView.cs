@@ -5,6 +5,6 @@ namespace RGR.MVC.Views
 {
     public class CourseView : BaseView<Course>
     {
-        public CourseView(IEnumerable<Course> entities) : base(entities) { }
+        public CourseView() : base() { }
     }
 }

@@ -40,3 +40,5 @@ C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.MVC\obj\Debug\net7.0\refint\RGR.M
 C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.MVC\obj\Debug\net7.0\RGR.MVC.pdb
 C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.MVC\obj\Debug\net7.0\RGR.MVC.genruntimeconfig.cache
 C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.MVC\obj\Debug\net7.0\ref\RGR.MVC.dll
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.MVC\bin\Debug\net7.0\SixLabors.ImageSharp.dll
+C:\Users\sasha\Desktop\KPI\DataBaseKPI\RGR\RGR.MVC\bin\Debug\net7.0\Spectre.Console.ImageSharp.dll

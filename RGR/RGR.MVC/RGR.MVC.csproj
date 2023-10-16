@@ -5,11 +5,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controlers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Spectre.Console" Version="0.47.0" />
+    <PackageReference Include="Spectre.Console.ImageSharp" Version="0.47.0" />
   </ItemGroup>
 
   <PropertyGroup>

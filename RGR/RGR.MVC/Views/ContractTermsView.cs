@@ -5,6 +5,6 @@ namespace RGR.MVC.Views
 {
     public class ContractTermsView : BaseView<ContractTerms>
     {
-        public ContractTermsView(IEnumerable<ContractTerms> entities) : base(entities) { }
+        public ContractTermsView() : base() { }
     }
 }

@@ -5,6 +5,6 @@ namespace RGR.MVC.Views
 {
     public class CoachView : BaseView<Coach>
     {
-        public CoachView(IEnumerable<Coach> entities) : base(entities) { }
+        public CoachView() : base() { }
     }
 }

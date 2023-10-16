@@ -1,25 +1,24 @@
 ﻿using Npgsql;
+using RGR.Dal.Filters;
+using RGR.Dal.Models.Entities;
 using RGR.Dal.Repos;
 using RGR.MVC.Views;
+using System.Text;
+
+Console.OutputEncoding = Encoding.UTF8;
+Console.InputEncoding = Encoding.UTF8;
 
 NpgsqlConnection npgsqlConnection = new NpgsqlConnection()
 {
     ConnectionString = "host=localhost;port=5433;database=appoi_db;user id=postgres;password=pass12345"
 };
 
-ClassRepo classRepo = new(npgsqlConnection);
-UserRepo userRepo = new(npgsqlConnection);
-GymRepo gymRepo = new(npgsqlConnection);
-CoachRepo coachRepo = new(npgsqlConnection);
+var userRepo = new UserRepo(npgsqlConnection);
 
-ClassView classView = new(classRepo.FindAll());
-UserView userView = new(userRepo.FindAll());
-GymView gymView = new(gymRepo.FindAll());
-CoachView coachView = new(coachRepo.FindAll());
+var user = userRepo.Find(Filter<User>.Value(u => u.UserId).Between(0, 1)).First();
 
-classView.Print();
-userView.Print();
-gymView.Print();
-coachView.Print();
+var userView = new UserView();
+
+userView.PrintEntityUpdated(user, user);
 
 return;

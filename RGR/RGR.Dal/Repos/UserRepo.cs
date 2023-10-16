@@ -10,7 +10,7 @@ namespace RGR.Dal.Repos
     {
         public UserRepo(NpgsqlConnection connection) : base(connection) { }
 
-        public IEnumerable<(Class Entity, long ContractsCount)> FindUsersContracts(Filter<User> filter)
+        public IEnumerable<(User Entity, long ContractsCount)> FindUsersContracts(Filter<User> filter)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
@@ -29,12 +29,12 @@ namespace RGR.Dal.Repos
 
             using NpgsqlDataReader reader = command.ExecuteReader();
 
-            List<(Class Entity, long ContractsCount)> resultList = new();
+            List<(User Entity, long ContractsCount)> resultList = new();
 
             while (reader.Read())
             {
-                (Class Entity, long ContractsCount) record = new();
-                record.Entity = new Class();
+                (User Entity, long ContractsCount) record = new();
+                record.Entity = new User();
 
                 Columns.ForEach(column =>
                 {
