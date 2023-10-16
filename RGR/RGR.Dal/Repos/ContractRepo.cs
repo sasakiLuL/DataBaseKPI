@@ -4,7 +4,7 @@ using RGR.Dal.Repos.BaseRepo;
 
 namespace RGR.Dal.Repos
 {
-    public class ContractRepo : BaseRepo<Class>
+    public class ContractRepo : BaseRepo<Contract>
     {
         public ContractRepo(NpgsqlConnection connection) : base(connection) { }
     }

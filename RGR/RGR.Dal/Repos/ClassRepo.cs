@@ -12,7 +12,7 @@ namespace RGR.Dal.Repos
     {
         public ClassRepo(NpgsqlConnection connection) : base(connection) {}
 
-        public IEnumerable<(Class Entity, string CourseName, long ParticipantCount)> GetFullClassInfo(IFilter<Class> filter)
+        public IEnumerable<(Class Entity, string CourseName, long ParticipantCount)> FindFullClassInfo(IFilter<Class> filter)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {

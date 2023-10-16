@@ -11,8 +11,16 @@ NpgsqlConnection npgsqlConnection = new NpgsqlConnection()
 
 ClassRepo classesRepo = new(npgsqlConnection);
 
-var a = classesRepo.GetFullClassInfo(Filter<Class>.Value(c => c.ClassId).Between(0, 5));
+var a = classesRepo.FindFullClassInfo(Filter<Class>.Value(c => c.ClassId).Between(0, 5));
 
 a.ToList().ForEach(e => Console.WriteLine($"{e.Entity.ClassId}, {e.Entity.MaxParticipants}, {e.ParticipantCount}, {e.CourseName}"));
+
+Console.WriteLine();
+
+GymRepo gymRepo = new(npgsqlConnection);
+
+var b = gymRepo.FindAllWithUserAndCoachesCount();
+
+b.ToList().ForEach(e => Console.WriteLine($"{e.Entity.GymName}, {e.UsersCount}, {e.CoachesCount}"));
 
 return;
