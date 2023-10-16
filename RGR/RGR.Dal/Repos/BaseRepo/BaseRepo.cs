@@ -149,7 +149,7 @@ namespace RGR.Dal.Repos.BaseRepo
             {
                 CommandType = CommandType.Text,
                 Connection = Connection,
-                CommandText = $"SELECT * FROM {TableName} WHERE {filter.QueryString};"
+                CommandText = $"SELECT * FROM {TableName} WHERE {filter.QueryString} ORDER BY {Key};"
             };
 
             command.Parameters.AddRange(filter.Parameters.ToArray());
@@ -185,7 +185,7 @@ namespace RGR.Dal.Repos.BaseRepo
             {
                 CommandType = CommandType.Text,
                 Connection = Connection,
-                CommandText = $"SELECT * FROM {TableName};"
+                CommandText = $"SELECT * FROM {TableName} ORDER BY {Key};"
             };
 
             Connection.Open();

@@ -3,26 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RGR.Dal", "RGR.Dal\RGR.Dal.csproj", "{097DA394-BC54-44DE-8596-CD58FEE0F1AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RGR.Dal", "RGR.Dal\RGR.Dal.csproj", "{097DA394-BC54-44DE-8596-CD58FEE0F1AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RGR.Console", "RGR.Console\RGR.Console.csproj", "{378DEE10-FE43-4842-97B6-58B29AFA386B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RGR.MVC", "RGR.MVC\RGR.MVC.csproj", "{45F5E6D9-6E2F-470A-B005-EE75C185A8B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{097DA394-BC54-44DE-8596-CD58FEE0F1AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{097DA394-BC54-44DE-8596-CD58FEE0F1AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{097DA394-BC54-44DE-8596-CD58FEE0F1AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{097DA394-BC54-44DE-8596-CD58FEE0F1AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{378DEE10-FE43-4842-97B6-58B29AFA386B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{378DEE10-FE43-4842-97B6-58B29AFA386B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{378DEE10-FE43-4842-97B6-58B29AFA386B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{378DEE10-FE43-4842-97B6-58B29AFA386B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45F5E6D9-6E2F-470A-B005-EE75C185A8B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45F5E6D9-6E2F-470A-B005-EE75C185A8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45F5E6D9-6E2F-470A-B005-EE75C185A8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45F5E6D9-6E2F-470A-B005-EE75C185A8B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {730D90A7-E48A-4301-92C9-4D7EA8BED722}
 	EndGlobalSection
 EndGlobal
