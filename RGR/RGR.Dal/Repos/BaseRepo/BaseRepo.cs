@@ -56,7 +56,7 @@ namespace RGR.Dal.Repos.BaseRepo
             Columns.ForEach((column) => command.Parameters.Add(new NpgsqlParameter()
             {
                 ParameterName = "@PARAM_" + column.ToUpper(),
-                Value = Properties[column].GetValue(entity)
+                Value = Properties[column].GetValue(entity) != null ? Properties[column].GetValue(entity) : DBNull.Value
             }));
 
             string columnsString = AggregateStringWithSeparators(Columns, (str) => str.ToString());
@@ -116,7 +116,7 @@ namespace RGR.Dal.Repos.BaseRepo
             Columns.ForEach((column) => command.Parameters.Add(new NpgsqlParameter()
             {
                 ParameterName = "@PARAM_" + column.ToUpper(),
-                Value = Properties[column].GetValue(entity)
+                Value = Properties[column].GetValue(entity) != null ? Properties[column].GetValue(entity) : DBNull.Value
             }));
             command.Parameters.Add(new NpgsqlParameter()
             {

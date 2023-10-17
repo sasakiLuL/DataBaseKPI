@@ -17,7 +17,7 @@ namespace RGR.Dal.Models.Entities
         public string? Description { get; set; } = string.Empty;
 
         [Column("gym_type")]
-        public string GymType { get; set; } = null!;
+        public string? GymType { get; set; } = null!;
 
         [Column("address")]
         public string Address { get; set; } = null!;

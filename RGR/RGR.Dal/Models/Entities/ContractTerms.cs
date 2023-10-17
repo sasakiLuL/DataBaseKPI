@@ -17,7 +17,7 @@ namespace RGR.Dal.Models.Entities
         public decimal Price { get; set; }
 
         [Column("description")]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
 
         [Column("gym_id")]
         public long GymId { get; set; }
