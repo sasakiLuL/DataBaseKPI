@@ -1,10 +1,8 @@
 ﻿using Npgsql;
-using RGR.Dal.Filters;
 using RGR.Dal.Models.Entities;
 using RGR.Dal.Repos.BaseRepo;
-using System.Collections.Generic;
 using System.Data;
-using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
+using RGR.Dal.Filters;
 
 namespace RGR.Dal.Repos
 {
@@ -12,7 +10,7 @@ namespace RGR.Dal.Repos
     {
         public ClassRepo(NpgsqlConnection connection) : base(connection) {}
 
-        public IEnumerable<(Class Entity, string CourseName, long ParticipantCount)> FindFullClassInfo(IFilter<Class> filter)
+        public IEnumerable<(Class Entity, string CourseName, long ParticipantCount)> FindFullClassInfo(Filter<Class> filter)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {

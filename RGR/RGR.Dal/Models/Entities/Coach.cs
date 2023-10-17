@@ -17,7 +17,7 @@ namespace RGR.Dal.Models.Entities
         public string LastName { get; set; } = null!;
 
         [Column("description")]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
 
         [Column("employment_date")]
         public DateTime EmploymentDate { get; set; }

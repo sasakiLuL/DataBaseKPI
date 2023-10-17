@@ -12,13 +12,13 @@ namespace RGR.MVC.Views.BaseView
     {
         protected List<PropertyInfo> Properties { get; private set; }
 
-        protected Color ColumnColor { get; private set; }
+        public Color ColumnColor { get; set; }
 
-        protected Color RowColor { get; private set; }
+        public Color RowColor { get; set; }
 
-        protected Color AdditionalColor { get; private set; }
+        public Color AdditionalColor { get; set; }
 
-        protected Color ErrorColor { get; private set; }
+        public Color ErrorColor { get; set; }
 
         protected BaseView()
         {
@@ -66,22 +66,24 @@ namespace RGR.MVC.Views.BaseView
         {
             List<Markup> columnsValues = new List<Markup>();
 
-            Properties.ForEach(p => columnsValues.Add(
-                new Markup(
-                    p.GetCustomAttribute<KeyAttribute>() == null ?
-                        $"[{color.ToMarkup()}]" + (p.GetValue(entity)?.ToString() ?? "NULL") + "[/]" :
-                        $"[bold underline {color.ToMarkup()}]" + (p.GetValue(entity)?.ToString() ?? "NULL") + "[/]"
-                    )
-            ));
+            Properties.ForEach(p => 
+            {
+                string res = " ";
+                if (p.GetCustomAttribute<KeyAttribute>() == null)
+                    res = $"[{color.ToMarkup()}]" + (p.GetValue(entity)?.ToString() ?? "NULL") + "[/]";
+
+                columnsValues.Add(new Markup(res));
+            });
 
             return new Columns(columnsValues.ToArray());
         }
 
-        public void PrintAllEntities(IEnumerable<TEntity> entities)
+        public void PrintEntities(IEnumerable<TEntity> entities)
         {
             var table = new Table();
 
-            table.Title = new TableTitle(typeof(Gym).GetCustomAttribute<TableAttribute>()?.Name ?? typeof(Gym).Name,
+            table.Title = new TableTitle(
+                typeof(TEntity).GetCustomAttribute<TableAttribute>()?.Name ?? typeof(TEntity).Name,
                 new Style(decoration: Decoration.Bold)
             );
 
@@ -100,13 +102,13 @@ namespace RGR.MVC.Views.BaseView
         public void PrintEntityDeleted(TEntity entity)
         {
             var rows = new Rows(
-                new Markup($"[{RowColor.ToMarkup()}]We have just removed entity from [{RowColor.ToMarkup()}]{typeof(TEntity).GetCustomAttribute<TableAttribute>()?.Name ?? typeof(TEntity).Name}[/] table with values:[/]"),
+                new Markup($"[{RowColor.ToMarkup()}]We have just removed [{RowColor.ToMarkup()}]{typeof(TEntity).Name}[/] from [white]{typeof(TEntity).GetCustomAttribute<TableAttribute>()?.Name ?? typeof(TEntity).Name}[/] table with values:[/]"),
                 CreateColumns(entity, RowColor)
             );
 
             Panel panel = new Panel(rows)
             {
-                Header = new PanelHeader($"[{ColumnColor.ToMarkup()}]Entity deleted![/]"),
+                Header = new PanelHeader($"[{ColumnColor.ToMarkup()}]{typeof(TEntity).Name} deleted![/]"),
                 Expand = true
             };
 
@@ -116,13 +118,13 @@ namespace RGR.MVC.Views.BaseView
         public void PrintEntityAdded(TEntity entity)
         {
             var rows = new Rows(
-                new Markup($"[{RowColor.ToMarkup()}]Hooray! We have just added entity to our [{RowColor.ToMarkup()}]{typeof(TEntity).GetCustomAttribute<TableAttribute>()?.Name ?? typeof(TEntity).Name}[/] table with value:[/]"),
+                new Markup($"[{RowColor.ToMarkup()}]Hooray! We have just added [{RowColor.ToMarkup()}]{typeof(TEntity).Name}[/] to our [white]{typeof(TEntity).GetCustomAttribute<TableAttribute>()?.Name ?? typeof(TEntity).Name}[/] table with value:[/]"),
                 CreateColumns(entity, RowColor)
             );
 
             Panel panel = new Panel(rows)
             {
-                Header = new PanelHeader($"[{ColumnColor.ToMarkup()}]Entity added![/]"),
+                Header = new PanelHeader($"[{ColumnColor.ToMarkup()}]{typeof(TEntity).Name} added![/]"),
                 Expand = true
             };
 
@@ -139,24 +141,24 @@ namespace RGR.MVC.Views.BaseView
 
             Panel panel = new Panel(rows)
             {
-                Header = new PanelHeader($"[{ColumnColor.ToMarkup()}]Entity added![/]"),
+                Header = new PanelHeader($"[{ColumnColor.ToMarkup()}]{typeof(TEntity).Name} updated![/]"),
                 Expand = true
             };
 
             AnsiConsole.Write(panel);
         }
 
-        public void PrintMissingEntityError(TEntity entity, Exception exception)
+        public void PrintMissingEntityError(long id, Exception exception)
         {
             var rows = new Rows(
-                new Markup($"[{ErrorColor.ToMarkup()}]We are sorry, we have no [{RowColor.ToMarkup()}]{typeof(TEntity).Name}[/] with values:[/]"),
-                CreateColumns(entity, RowColor),
+                new Markup($"[{ErrorColor.ToMarkup()}]We are sorry, we have no [{RowColor.ToMarkup()}]{typeof(TEntity).Name}[/] with id value:[/]"),
+                new Markup(id.ToString(), new Style(foreground: RowColor)),
                 new Markup($"[{ErrorColor.ToMarkup()}]Exception: {exception.Message}[/]")
             );
 
             Panel panel = new Panel(rows)
             {
-                Header = new PanelHeader($"[{ErrorColor.ToMarkup()}]Missing Entity Error![/]"),
+                Header = new PanelHeader($"[{ErrorColor.ToMarkup()}]Missing {typeof(TEntity).Name} Error![/]"),
                 Expand = true
             };
 

@@ -29,6 +29,6 @@ namespace RGR.Dal.Models.Entities
         public string PhoneNumber { get; set; } = null!;
 
         [Column("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; } = null;
     }
 }

@@ -10,7 +10,7 @@ namespace RGR.Dal.Repos
     {
         public UserRepo(NpgsqlConnection connection) : base(connection) { }
 
-        public IEnumerable<(User Entity, long ContractsCount)> FindUsersContracts(Filter<User> filter)
+        public IEnumerable<(User Entity, long ContractsCount)> FindUsersContracts(Filter<(User Entity, long ContractsCount)> filter)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {

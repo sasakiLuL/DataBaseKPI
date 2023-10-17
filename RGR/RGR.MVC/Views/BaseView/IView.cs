@@ -2,7 +2,7 @@
 {
     public interface IView<TEntity> where TEntity: class, new()
     {
-        public void PrintMissingEntityError(TEntity entity, Exception exception);
+        public void PrintMissingEntityError(long id, Exception exception);
 
         public void PrintEntityAdded(TEntity entity);
 
@@ -10,6 +10,6 @@
 
         public void PrintEntityDeleted(TEntity entity);
 
-        public void PrintAllEntities(IEnumerable<TEntity> entities);
+        public void PrintEntities(IEnumerable<TEntity> entities);
     }
 }

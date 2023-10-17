@@ -2,6 +2,7 @@
 using RGR.Dal.Filters;
 using RGR.Dal.Models.Entities;
 using RGR.Dal.Repos;
+using RGR.MVC.Controlers;
 using RGR.MVC.Views;
 using System.Text;
 
@@ -13,12 +14,6 @@ NpgsqlConnection npgsqlConnection = new NpgsqlConnection()
     ConnectionString = "host=localhost;port=5433;database=appoi_db;user id=postgres;password=pass12345"
 };
 
-var userRepo = new UserRepo(npgsqlConnection);
-
-var user = userRepo.Find(Filter<User>.Value(u => u.UserId).Between(0, 1)).First();
-
-var userView = new UserView();
-
-userView.PrintEntityUpdated(user, user);
+var controler = new ClassController(new ClassRepo(npgsqlConnection), new ClassView());
 
 return;

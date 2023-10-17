@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
+using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
 
 namespace RGR.Dal.Repos.BaseRepo
 {
@@ -19,7 +20,7 @@ namespace RGR.Dal.Repos.BaseRepo
 
         public string TableName { get; private set; }
 
-        protected Dictionary<string, PropertyInfo> Properties { get; private set; }
+        public Dictionary<string, PropertyInfo> Properties { get; private set; }
 
         public BaseRepo(NpgsqlConnection connection)
         {

@@ -1,5 +1,4 @@
 ﻿using Npgsql;
-using RGR.Dal.Filters;
 using RGR.Dal.Models.Entities;
 using RGR.Dal.Repos.BaseRepo;
 using System.Data;

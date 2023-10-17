@@ -5,17 +5,17 @@ using System.Reflection;
 
 namespace RGR.Dal.Filters
 {
-    public class Filter<TEntity> : IFilter<TEntity> where TEntity : class, new()
+    public class Filter<TEntity>
     {
         private static long _filterCounter = 0;
 
         protected static long FilterCounter { get { _filterCounter++; return _filterCounter; } }
 
-        public string ColumnName { get; protected set; }
+        internal string ColumnName { get; private set; }
 
-        public string QueryString { get; protected set; }
+        internal string QueryString { get; private set; }
 
-        public List<NpgsqlParameter> Parameters { get; private set; }
+        internal List<NpgsqlParameter> Parameters { get; private set; }
 
         protected Filter()
         {
@@ -24,7 +24,7 @@ namespace RGR.Dal.Filters
             Parameters = new List<NpgsqlParameter>();
         }
 
-        public static Filter<TEntity> Value<F>(Expression<Func<TEntity, F>> exp)
+        public static Filter<TEntity> Value<Param>(Expression<Func<TEntity, Param>> exp)
         {
             MemberInfo member = (exp.Body as MemberExpression)?.Member ??
                 throw new Exception("a");
