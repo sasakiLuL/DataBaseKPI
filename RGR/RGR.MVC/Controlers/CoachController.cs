@@ -9,7 +9,7 @@ namespace RGR.MVC.Controlers
     {
         public CoachController(CoachRepo repo, CoachView view) : base(repo, view) { }
 
-        public void AddCoach(string FirstName, string LastName, string? Description, DateTime EmploymentDate, long GymId)
+        public void AddCoach(string FirstName, string LastName, string? Description, DateOnly EmploymentDate, long GymId)
         {
             AddEntity(new Coach() { FirstName = FirstName, LastName = LastName, Description = Description, EmploymentDate = EmploymentDate, GymId = GymId });
         }
@@ -19,7 +19,7 @@ namespace RGR.MVC.Controlers
             PrintAllEntities();
         }
 
-        public void UpdateCoach(long id, string FirstName, string LastName, string? Description, DateTime EmploymentDate, long GymId)
+        public void UpdateCoach(long id, string FirstName, string LastName, string? Description, DateOnly EmploymentDate, long GymId)
         {
             UpdateEntity(id, new Coach() { FirstName = FirstName, LastName = LastName, Description = Description, EmploymentDate = EmploymentDate, GymId = GymId });
         }

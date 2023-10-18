@@ -11,7 +11,7 @@ namespace RGR.MVC.Controlers
     {
         public UserController(UserRepo repo, UserView view) : base(repo, view) { }
 
-        public void AddUser(string FirstName, string LastName, int Sex, DateTime DateOfBirth, string Address, string PhoneNumber, string? Email)
+        public void AddUser(string FirstName, string LastName, int Sex, DateOnly DateOfBirth, string Address, string PhoneNumber, string? Email)
         {
             AddEntity(new User() { FirstName = FirstName, LastName = LastName, Sex = Sex, DateOfBirth = DateOfBirth, Address = Address, PhoneNumber = PhoneNumber, Email = Email });
         }
@@ -36,7 +36,7 @@ namespace RGR.MVC.Controlers
             PrintAllEntities();
         }
 
-        public void UpdateUser(long id, string FirstName, string LastName, int Sex, DateTime DateOfBirth, string Address, string PhoneNumber, string? Email)
+        public void UpdateUser(long id, string FirstName, string LastName, int Sex, DateOnly DateOfBirth, string Address, string PhoneNumber, string? Email)
         {
             UpdateEntity(id, new User() { FirstName = FirstName, LastName = LastName, Sex = Sex, DateOfBirth = DateOfBirth, Address = Address, PhoneNumber = PhoneNumber, Email = Email });
         }

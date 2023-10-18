@@ -14,6 +14,7 @@ namespace RGR.MVC.UI
             { 
                 new StartMenuScene(settings),
                 new ClassMenuScene(settings, new ClassController(new ClassRepo(connection), new ClassView())),
+                new GymMenuScene(settings, new GymController(new GymRepo(connection), new GymView())),
             };
         }
     }

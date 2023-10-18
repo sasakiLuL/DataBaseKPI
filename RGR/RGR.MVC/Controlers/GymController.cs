@@ -11,7 +11,7 @@ namespace RGR.MVC.Controlers
     {
         public GymController(GymRepo repo, GymView view) : base(repo, view) { }
 
-        public void AddGym(string GymName, string? Description, string GymType, string Address, string? HomePage, string PhoneNumber, string? Email)
+        public void AddGym(string GymName, string? Description, string? GymType, string Address, string? HomePage, string PhoneNumber, string? Email)
         {
             AddEntity(new Gym() { GymName = GymName, Description = Description, GymType = GymType, Address = Address, HomePage = HomePage, Email = Email, PhoneNumber = PhoneNumber });
         }

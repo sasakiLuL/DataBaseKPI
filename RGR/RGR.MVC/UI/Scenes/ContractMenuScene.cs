@@ -3,18 +3,15 @@ using Spectre.Console;
 
 namespace RGR.MVC.UI.Scenes
 {
-    public class ClassMenuScene : TableScene
+    public class ContractMenuScene : TableScene
     {
-        public override SceneType Type => SceneType.ClassMenu;
+        public override SceneType Type => SceneType.ContractMenu;
 
-        public ClassController Controller { get; set; }
+        public ContractController Controller { get; set; }
 
-        public ClassMenuScene(UISettings settings, ClassController controller) : base(settings)
+        public ContractMenuScene(UISettings settings, ContractController controller) : base(settings)
         {
             Controller = controller;
-            var MenuChoicesList = MenuChoices.ToList();
-            MenuChoicesList.Insert(0, $"Find full class info [{Settings.UnactiveColor}](by id range)[/]");
-            MenuChoices = MenuChoicesList.ToArray();
         }
 
         public override SceneType Render()
@@ -22,32 +19,38 @@ namespace RGR.MVC.UI.Scenes
             switch (GetPrompt())
             {
                 case "Find all":
-                    Controller.PrintAllClasses();
+                    Controller.PrintAllContracts();
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
                     AnsiConsole.Clear();
-                    return SceneType.ClassMenu;
+                    return SceneType.ContractMenu;
 
                 case "Add":
-                    Controller.AddClass(
+                    Controller.AddContract(
                         AnsiConsole.Prompt(
-                            new TextPrompt<int>($"Enter [{Settings.HeaderColor}]maximal participants[/]:")
+                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]transaction time[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
                         AnsiConsole.Prompt(
-                            new TextPrompt<long>($"Enter [{Settings.HeaderColor}]course id[/]:")
+                            new TextPrompt<string>($"Enter [{Settings.HeaderColor}]payment method[/]:")
+                            .PromptStyle(Settings.HeaderColor)
+                            .ValidationErrorMessage("That's not a valid value!")
+                            .Validate(v =>
+                            {
+                                if (v.Length <= 300)
+                                    return ValidationResult.Success();
+                                return ValidationResult.Error("String should be not longer than 300");
+                            })
+                        ),
+                        AnsiConsole.Prompt(
+                            new TextPrompt<long>($"Enter [{Settings.HeaderColor}]user id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
                         AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]start time[/]:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                        ),
-                        AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]end time[/]:")
+                            new TextPrompt<long>($"Enter [{Settings.HeaderColor}]contract terms id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         )
@@ -56,32 +59,38 @@ namespace RGR.MVC.UI.Scenes
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
                     AnsiConsole.Clear();
-                    return SceneType.ClassMenu;
+                    return SceneType.ContractMenu;
 
                 case "Update":
-                    Controller.UpdateClass(
+                    Controller.UpdateContract(
                         AnsiConsole.Prompt(
-                            new TextPrompt<long>($"Enter class[{Settings.HeaderColor}] id[/]:")
+                            new TextPrompt<long>($"Enter [{Settings.HeaderColor}] id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
                         AnsiConsole.Prompt(
-                            new TextPrompt<int>($"Enter [{Settings.HeaderColor}]maximal participants[/]:")
+                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]transaction time[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
                         AnsiConsole.Prompt(
-                            new TextPrompt<long>($"Enter [{Settings.HeaderColor}]course id[/]:")
+                            new TextPrompt<string>($"Enter [{Settings.HeaderColor}]payment method[/]:")
+                            .PromptStyle(Settings.HeaderColor)
+                            .ValidationErrorMessage("That's not a valid value!")
+                            .Validate(v =>
+                            {
+                                if (v.Length <= 300)
+                                    return ValidationResult.Success();
+                                return ValidationResult.Error("String should be not longer than 300");
+                            })
+                        ),
+                        AnsiConsole.Prompt(
+                            new TextPrompt<long>($"Enter [{Settings.HeaderColor}]user id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
                         AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]start time[/]:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                        ),
-                        AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]end time[/]:")
+                            new TextPrompt<long>($"Enter [{Settings.HeaderColor}]contract terms id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         )
@@ -90,10 +99,10 @@ namespace RGR.MVC.UI.Scenes
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
                     AnsiConsole.Clear();
-                    return SceneType.ClassMenu;
+                    return SceneType.ContractMenu;
 
                 case "Delete":
-                    Controller.DeleteClass(
+                    Controller.DeleteContract(
                         AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter class[{Settings.HeaderColor}] id[/]:")
                             .PromptStyle(Settings.HeaderColor)
@@ -104,36 +113,10 @@ namespace RGR.MVC.UI.Scenes
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
                     AnsiConsole.Clear();
-                    return SceneType.ClassMenu;
-
-                case "Back":
-                    AnsiConsole.Clear();
-                    return SceneType.StartMenu;
+                    return SceneType.ContractMenu;
 
                 default:
-                    long firstInput = AnsiConsole.Prompt(
-                            new TextPrompt<long>($"Enter first[{Settings.HeaderColor}] id[/] bound:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                        );
-                    long secondInput = AnsiConsole.Prompt(
-                            new TextPrompt<long>($"Enter second[{Settings.HeaderColor}] id[/] bound:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                            .Validate(s =>
-                            {
-                                if (s > firstInput)
-                                    return ValidationResult.Success();
-                                else
-                                    return ValidationResult.Error("First value greater than second!");
-                            })
-                        );
-                    Controller.PrintFullClassInfoByClassIdRange(firstInput, secondInput);
-                    AnsiConsole.Prompt(
-                        new TextPrompt<string>("Press to continue...").AllowEmpty()
-                    );
-                    AnsiConsole.Clear();
-                    return SceneType.ClassMenu;
+                    return SceneType.StartMenu;
             };
         }
     }

@@ -20,7 +20,7 @@ namespace RGR.Dal.Models.Entities
         public string? Description { get; set; } = string.Empty;
 
         [Column("employment_date")]
-        public DateTime EmploymentDate { get; set; }
+        public DateOnly EmploymentDate { get; set; }
 
         [Column("gym_id")]
         public long GymId { get; set; }

@@ -9,7 +9,7 @@ namespace RGR.MVC.Controlers
     {
         public ContractTermsController(ContractTermsRepo repo, ContractTermsView view) : base(repo, view) { }
 
-        public void AddContractTerms(long id, string ContractName, decimal Price, string Description, long GymId)
+        public void AddContractTerms(string ContractName, decimal Price, string Description, long GymId)
         {
             AddEntity(new ContractTerms() { ContractName = ContractName, Price = Price, Description = Description, GymId = GymId });
         }
