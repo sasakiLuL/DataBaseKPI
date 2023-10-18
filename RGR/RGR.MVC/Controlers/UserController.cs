@@ -2,6 +2,8 @@
 using RGR.Dal.Models.Entities;
 using RGR.Dal.Repos;
 using RGR.MVC.Views;
+using RGR.Dal.Filters;
+using Spectre.Console;
 
 namespace RGR.MVC.Controlers
 {
@@ -12,6 +14,21 @@ namespace RGR.MVC.Controlers
         public void AddUser(string FirstName, string LastName, int Sex, DateTime DateOfBirth, string Address, string PhoneNumber, string? Email)
         {
             AddEntity(new User() { FirstName = FirstName, LastName = LastName, Sex = Sex, DateOfBirth = DateOfBirth, Address = Address, PhoneNumber = PhoneNumber, Email = Email });
+        }
+
+        public void PrintUsersContractsByDateOfBirth(DateOnly f, DateOnly s)
+        {
+            try
+            {
+                var entities = ((UserRepo)Repo).FindUsersContracts
+                    (filter: Filter<(User Entity, long ContractsCount)>.Value(v => v.Entity.DateOfBirth)
+                    .Between(f, s));
+                ((UserView)View).PrintUsersContracts(entities.ToList());
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.WriteLine(ex.ToString());
+            }
         }
 
         public void PrintAllUsers()

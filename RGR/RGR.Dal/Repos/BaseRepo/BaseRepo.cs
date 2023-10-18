@@ -66,15 +66,8 @@ namespace RGR.Dal.Repos.BaseRepo
 
             Connection.Open();
 
-            try
-            {
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString()); 
-            }
-            
+            command.ExecuteNonQuery();
+ 
             Connection.Close();
         }
 

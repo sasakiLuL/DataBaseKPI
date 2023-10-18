@@ -24,11 +24,12 @@ namespace RGR.Dal.Filters
             Parameters = new List<NpgsqlParameter>();
         }
 
-        public static Filter<TEntity> Value<Param>(Expression<Func<TEntity, Param>> exp)
+        public static Filter<TEntity> Value<Param>(Expression<Func<TEntity, Param>> exp, string schema = "")
         {
             MemberInfo member = (exp.Body as MemberExpression)?.Member ??
                 throw new Exception("a");
             var outFilt = new Filter<TEntity>();
+            if (schema != "") outFilt.ColumnName += schema + '.';
             outFilt.ColumnName += member.GetCustomAttribute<ColumnAttribute>()?.Name ?? member.Name;
             outFilt.QueryString += outFilt.ColumnName + ' ';
             return outFilt;

@@ -2,6 +2,8 @@
 using RGR.Dal.Models.Entities;
 using RGR.Dal.Repos;
 using RGR.MVC.Views;
+using RGR.Dal.Filters;
+using Spectre.Console;
 
 namespace RGR.MVC.Controlers
 {
@@ -17,6 +19,21 @@ namespace RGR.MVC.Controlers
         public void PrintAllGyms()
         {
             PrintAllEntities();
+        }
+
+        public void PrintGymUsersAndCoachesCountByName(string likeFunc)
+        {
+            try
+            {
+                var entities = ((GymRepo)Repo).FindWithUserAndCoachesCount
+                    (filter: Filter<(Gym Entity, long UsersCount, long CoachesCount)>.Value(v => v.Entity.GymName, "subq")
+                    .Like(likeFunc));
+                ((GymView)View).ViewAllWithUserAndCoachesCount(entities.ToList());
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.WriteLine(ex.ToString());
+            }
         }
 
         public void UpdateGym(long id, string GymName, string? Description, string GymType, string Address, string? HomePage, string PhoneNumber, string? Email)

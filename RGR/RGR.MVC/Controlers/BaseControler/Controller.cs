@@ -1,10 +1,7 @@
-﻿using RGR.Dal.Filters;
-using RGR.Dal.Repos.BaseRepo;
+﻿using RGR.Dal.Repos.BaseRepo;
 using RGR.MVC.Views.BaseView;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Security.Principal;
 
 namespace RGR.MVC.Controlers.BaseControler
 {
@@ -56,11 +53,18 @@ namespace RGR.MVC.Controlers.BaseControler
 
         protected void AddEntity(TEntity entity)
         {
-            Repo.Add(entity);
-            View.PrintEntityAdded(entity);
+            try
+            {
+                Repo.Add(entity);
+                View.PrintEntityAdded(entity);
+            }
+            catch (Exception ex)
+            {
+                View.PrintError(ex);
+            }
         }
 
-        private TEntity findOldById(long id)
+        protected TEntity findOldById(long id)
         {
             var a = typeof(TEntity).GetProperties().Where(p => p.GetCustomAttributes<KeyAttribute>() != null).First();
             return Repo.FindAll().Where(e => (long?)a.GetValue(e) == id

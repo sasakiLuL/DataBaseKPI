@@ -11,5 +11,7 @@
         public void PrintEntityDeleted(TEntity entity);
 
         public void PrintEntities(IEnumerable<TEntity> entities);
+
+        public void PrintError(Exception exception);
     }
 }

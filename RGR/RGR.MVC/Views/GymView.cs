@@ -36,8 +36,8 @@ namespace RGR.MVC.Views
             {
                 Markup[] additionalTableRows = new Markup[]
                 {
-                    new Markup(entity.UsersCount.ToString(), new Style(foreground: AdditionalColor)),
-                    new Markup(entity.CoachesCount.ToString(), new Style(foreground: AdditionalColor))
+                    new Markup(entity.UsersCount.ToString(), new Style(foreground: NotHoweredColor)),
+                    new Markup(entity.CoachesCount.ToString(), new Style(foreground: NotHoweredColor))
                 };
 
                 table.AddRow(

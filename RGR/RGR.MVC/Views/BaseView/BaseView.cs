@@ -16,7 +16,7 @@ namespace RGR.MVC.Views.BaseView
 
         public Color RowColor { get; set; }
 
-        public Color AdditionalColor { get; set; }
+        public Color NotHoweredColor { get; set; }
 
         public Color ErrorColor { get; set; }
 
@@ -25,7 +25,7 @@ namespace RGR.MVC.Views.BaseView
             Properties = typeof(TEntity).GetProperties().ToList();
             ColumnColor = Color.Aquamarine1_1;
             RowColor = Color.NavajoWhite1;
-            AdditionalColor = Color.DarkOliveGreen3_2;
+            NotHoweredColor = Color.DarkOliveGreen3_2;
             ErrorColor = Color.Red1;
         }
 
@@ -160,6 +160,20 @@ namespace RGR.MVC.Views.BaseView
             {
                 Header = new PanelHeader($"[{ErrorColor.ToMarkup()}]Missing {typeof(TEntity).Name} Error![/]"),
                 Expand = true
+            };
+
+            AnsiConsole.Write(panel);
+        }
+
+        public void PrintError(Exception exception)
+        {
+            var rows = new Rows(
+                new Markup($"[{ErrorColor.ToMarkup()}]Exception: {exception.Message}[/]")
+            );
+
+            Panel panel = new Panel(rows)
+            {
+                Header = new PanelHeader($"[{ErrorColor.ToMarkup()}]{typeof(TEntity).Name} Error![/]"),
             };
 
             AnsiConsole.Write(panel);

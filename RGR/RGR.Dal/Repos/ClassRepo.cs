@@ -10,20 +10,20 @@ namespace RGR.Dal.Repos
     {
         public ClassRepo(NpgsqlConnection connection) : base(connection) {}
 
-        public IEnumerable<(Class Entity, string CourseName, long ParticipantCount)> FindFullClassInfo(Filter<Class> filter)
+        public IEnumerable<(Class Entity, string CourseName, long ParticipantCount)> FindFullClassInfo(Filter<(Class Entity, string CourseName, long ParticipantCount)> filter)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
                 CommandType = CommandType.Text,
                 Connection = Connection,
                 CommandText = @$"select 
-	                                class_id, max_participants, course_id, start_time, end_time, course_name, count(user_id) participant_count
+	                                class_id, max_participants, course_id, start_time, end_time, course_name as CourseName, count(user_id) as ParticipantCount
                                 from 
 	                                classes
                                 full join courses using(course_id)
                                 full join classes_participants using(class_id)
                                 where {filter.QueryString}
-                                group by class_id, max_participants, start_time, end_time, course_id, course_name
+                                group by class_id, max_participants, start_time, end_time, course_id, CourseName
                                 order by class_id;"
             };
 
@@ -47,9 +47,9 @@ namespace RGR.Dal.Repos
 
                 Properties[Key].SetValue(record.Entity, reader[Key]);
 
-                record.CourseName = (string)reader["course_name"];
+                record.CourseName = (string)reader["CourseName"];
 
-                record.ParticipantCount = (long)reader["participant_count"];
+                record.ParticipantCount = (long)reader["ParticipantCount"];
 
                 resultList.Add(record);
             }
