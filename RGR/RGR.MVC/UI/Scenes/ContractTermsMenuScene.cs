@@ -3,13 +3,13 @@ using Spectre.Console;
 
 namespace RGR.MVC.UI.Scenes
 {
-    public class ContractTermsScene : TableScene
+    public class ContractTermsMenuScene : TableScene
     {
         public override SceneType Type => SceneType.ContractTermsMenu;
 
         public ContractTermsController Controller { get; set; }
 
-        public ContractTermsScene(UISettings settings, ContractTermsController controller) : base(settings)
+        public ContractTermsMenuScene(UISettings settings, ContractTermsController controller) : base(settings)
         {
             Controller = controller;
         }

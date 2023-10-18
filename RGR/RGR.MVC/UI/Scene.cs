@@ -1,7 +1,4 @@
-﻿using RGR.MVC.Controlers.BaseControler;
-using Spectre.Console;
-
-namespace RGR.MVC.UI
+﻿namespace RGR.MVC.UI
 {
     public abstract class Scene
     {

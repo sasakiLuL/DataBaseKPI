@@ -6,6 +6,7 @@ namespace RGR.MVC.UI
     public enum SceneType
     {
         StartMenu,
+        GenerateMenu,
         ClassMenu,
         CoachMenu,
         ContractMenu,

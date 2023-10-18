@@ -10,7 +10,7 @@ namespace RGR.MVC.UI
         public TableScene(UISettings settings) : base(settings)
         {
             MenuChoices = new[] {
-                    "Find All",
+                    "Find all",
                     "Add",
                     "Update",
                     "Delete",

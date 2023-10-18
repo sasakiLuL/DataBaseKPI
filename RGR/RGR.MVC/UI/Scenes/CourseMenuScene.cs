@@ -51,7 +51,7 @@ namespace RGR.MVC.UI.Scenes
                         AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter [{Settings.HeaderColor}]id[/]:")
                             .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!"),
+                            .ValidationErrorMessage("That's not a valid value!")
                         ),
                         AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]course name[/]:")

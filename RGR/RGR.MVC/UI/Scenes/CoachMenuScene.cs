@@ -63,7 +63,7 @@ namespace RGR.MVC.UI.Scenes
                             })
                         ),
                         AnsiConsole.Prompt(
-                            new TextPrompt<DateOnly>($"Enter [{Settings.HeaderColor}]employment date[/]:")
+                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]employment date[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
@@ -121,7 +121,7 @@ namespace RGR.MVC.UI.Scenes
                             })
                         ),
                         AnsiConsole.Prompt(
-                            new TextPrompt<DateOnly>($"Enter [{Settings.HeaderColor}]employment date[/]:")
+                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]employment date[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),

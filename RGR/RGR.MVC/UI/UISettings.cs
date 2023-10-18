@@ -4,13 +4,13 @@ namespace RGR.MVC.UI
 {
     public class UISettings
     {
-        public Color ActiveColor => Color.Grey93;
+        public Color ActiveColor => Color.NavajoWhite1;
 
-        public Color UnactiveColor => Color.Grey74;
+        public Color UnactiveColor => Color.DarkOliveGreen3_2;
 
-        public Color HeaderColor => Color.HotPink;
+        public Color HeaderColor => Color.Aquamarine1_1;
 
-        public Color SelectedColor => Color.PaleVioletRed1;
+        public Color SelectedColor => Color.Aquamarine3;
 
         public Func<SceneType, string> SceneTypeConverter =>
             (type) =>

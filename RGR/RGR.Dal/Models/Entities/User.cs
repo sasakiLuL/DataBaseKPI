@@ -20,7 +20,7 @@ namespace RGR.Dal.Models.Entities
         public int Sex { get; set; }
 
         [Column("date_of_birth")]
-        public DateOnly DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         [Column("address")]
         public string Address { get; set; } = null!;

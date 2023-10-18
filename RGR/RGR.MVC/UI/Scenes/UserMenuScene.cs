@@ -65,7 +65,7 @@ namespace RGR.MVC.UI.Scenes
                             })
                         ),
                         AnsiConsole.Prompt(
-                            new TextPrompt<DateOnly>($"Enter [{Settings.HeaderColor}]date of birth[/]:")
+                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]date of birth[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
@@ -151,7 +151,7 @@ namespace RGR.MVC.UI.Scenes
                             })
                         ),
                         AnsiConsole.Prompt(
-                            new TextPrompt<DateOnly>($"Enter [{Settings.HeaderColor}]date of birth[/]:")
+                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]date of birth[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
@@ -215,13 +215,13 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.StartMenu;
 
                 default:
-                    DateOnly firstInput = AnsiConsole.Prompt(
-                            new TextPrompt<DateOnly>($"Enter first[{Settings.HeaderColor}] id[/] bound:")
+                    DateTime firstInput = AnsiConsole.Prompt(
+                            new TextPrompt<DateTime>($"Enter first[{Settings.HeaderColor}] id[/] bound:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         );
-                    DateOnly secondInput = AnsiConsole.Prompt(
-                            new TextPrompt<DateOnly>($"Enter second[{Settings.HeaderColor}] id[/] bound:")
+                    DateTime secondInput = AnsiConsole.Prompt(
+                            new TextPrompt<DateTime>($"Enter second[{Settings.HeaderColor}] id[/] bound:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                             .Validate(s =>

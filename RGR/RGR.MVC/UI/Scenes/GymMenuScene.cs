@@ -13,7 +13,7 @@ namespace RGR.MVC.UI.Scenes
         {
             Controller = controller;
             var MenuChoicesList = MenuChoices.ToList();
-            MenuChoicesList.Insert(0, $"Find gyms with users and coaches count[{Settings.UnactiveColor}] (by id range)[/]");
+            MenuChoicesList.Insert(0, $"Find gyms with users and coaches count[{Settings.UnactiveColor}] (like expression)[/]");
             MenuChoices = MenuChoicesList.ToArray();
         }
 
