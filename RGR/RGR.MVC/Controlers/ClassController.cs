@@ -21,10 +21,10 @@ namespace RGR.MVC.Controlers
         {
             try
             {
-                var entities = ((ClassRepo)Repo).FindFullClassInfo
+                var items = ((ClassRepo)Repo).FindFullClassInfo
                     (filter: Filter<(Class Entity, string CourseName, long ParticipantCount)>.Value(v => v.Entity.ClassId)
                     .Between(f, s));
-                ((ClassView)View).PrintFullClassInfo(entities.ToList());
+                ((ClassView)View).PrintFullClassInfo(items.Item1.ToList(), items.Item2);
             }
             catch (Exception ex)
             {

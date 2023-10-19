@@ -25,10 +25,10 @@ namespace RGR.MVC.Controlers
         {
             try
             {
-                var entities = ((GymRepo)Repo).FindWithUserAndCoachesCount
+                var items = ((GymRepo)Repo).FindWithUserAndCoachesCount
                     (filter: Filter<(Gym Entity, long UsersCount, long CoachesCount)>.Value(v => v.Entity.GymName, "subq")
                     .Like(likeFunc));
-                ((GymView)View).ViewAllWithUserAndCoachesCount(entities.ToList());
+                ((GymView)View).ViewAllWithUserAndCoachesCount(items.Item1.ToList(), items.Item2);
             }
             catch (Exception ex)
             {

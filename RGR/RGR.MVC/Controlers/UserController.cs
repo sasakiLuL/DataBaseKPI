@@ -20,10 +20,10 @@ namespace RGR.MVC.Controlers
         {
             try
             {
-                var entities = ((UserRepo)Repo).FindUsersContracts
+                var items = ((UserRepo)Repo).FindUsersContracts
                     (filter: Filter<(User Entity, long ContractsCount)>.Value(v => v.Entity.DateOfBirth)
                     .Between(f, s));
-                ((UserView)View).PrintUsersContracts(entities.ToList());
+                ((UserView)View).PrintUsersContracts(items.Item1.ToList(), items.Item2);
             }
             catch (Exception ex)
             {
