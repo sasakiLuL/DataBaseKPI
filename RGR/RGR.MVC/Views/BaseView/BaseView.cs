@@ -97,7 +97,7 @@ namespace RGR.MVC.Views.BaseView
                 );
 
             AnsiConsole.Write(table);
-            AnsiConsole.Write($"{RowColor.ToMarkup()}" + query + "[/]");
+            AnsiConsole.Write($"[{RowColor.ToMarkup()}]" + query + "[/]");
         }
 
         public void PrintEntityDeleted(TEntity entity, string query)
@@ -114,7 +114,7 @@ namespace RGR.MVC.Views.BaseView
             };
 
             AnsiConsole.Write(panel);
-            AnsiConsole.Write($"{RowColor.ToMarkup()}" + query + "[/]");
+            AnsiConsole.Write($"[{RowColor.ToMarkup()}]" + query + "[/]");
         }
 
         public void PrintEntityAdded(TEntity entity, string query)

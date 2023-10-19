@@ -46,7 +46,7 @@ namespace RGR.MVC.Views
             }
 
             AnsiConsole.Write(table);
-            AnsiConsole.Write($"{RowColor.ToMarkup()}" + query + "[/]");
+            AnsiConsole.Write($"[{RowColor.ToMarkup()}]" + query + "[/]");
         }
     }
 }
