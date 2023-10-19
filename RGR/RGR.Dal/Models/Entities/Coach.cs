@@ -11,12 +11,15 @@ namespace RGR.Dal.Models.Entities
         public long CoachId { get; set; }
 
         [Column("first_name")]
+        [MaxLength(100)]
         public string FirstName { get; set; } = null!;
 
         [Column("last_name")]
+        [MaxLength(100)]
         public string LastName { get; set; } = null!;
 
         [Column("description")]
+        [MaxLength(2000)]
         public string? Description { get; set; } = string.Empty;
 
         [Column("employment_date")]

@@ -214,6 +214,17 @@ namespace RGR.MVC.UI.Scenes
                     AnsiConsole.Clear();
                     return SceneType.StartMenu;
 
+                case "Generate":
+                    Controller.GenerateRecords(
+                        AnsiConsole.Prompt(
+                            new TextPrompt<long>($"Enter records[{Settings.HeaderColor}] count[/]:")
+                            .PromptStyle(Settings.HeaderColor)
+                            .ValidationErrorMessage("That's not a valid value!")
+                        )
+                    );
+                    AnsiConsole.Clear();
+                    return SceneType.UserMenu;
+
                 default:
                     DateTime firstInput = AnsiConsole.Prompt(
                             new TextPrompt<DateTime>($"Enter first[{Settings.HeaderColor}] timestamp[/] bound:")

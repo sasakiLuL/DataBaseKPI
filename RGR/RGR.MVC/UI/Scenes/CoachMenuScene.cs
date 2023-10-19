@@ -151,6 +151,17 @@ namespace RGR.MVC.UI.Scenes
                     AnsiConsole.Clear();
                     return SceneType.ClassMenu;
 
+                case "Generate":
+                    Controller.GenerateRecords(
+                        AnsiConsole.Prompt(
+                            new TextPrompt<long>($"Enter records[{Settings.HeaderColor}] count[/]:")
+                            .PromptStyle(Settings.HeaderColor)
+                            .ValidationErrorMessage("That's not a valid value!")
+                        )
+                    );
+                    AnsiConsole.Clear();
+                    return SceneType.CoachMenu;
+
                 default:
                     return SceneType.StartMenu;
             };

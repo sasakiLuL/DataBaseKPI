@@ -19,8 +19,7 @@ namespace RGR.MVC.UI
                 new ContractTermsMenuScene(settings, new ContractTermsController(new ContractTermsRepo(connection), new ContractTermsView())),
                 new CourseMenuScene(settings, new CourseController (new CourseRepo(connection), new CourseView())),
                 new GymMenuScene(settings, new GymController(new GymRepo(connection), new GymView())),
-                new UserMenuScene(settings, new UserController(new UserRepo(connection), new UserView())),
-                new GenerateDataScene(settings),
+                new UserMenuScene(settings, new UserController(new UserRepo(connection), new UserView()))
             };
         }
     }

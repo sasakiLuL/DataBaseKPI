@@ -20,5 +20,7 @@ namespace RGR.Dal.Repos.BaseRepo
         (IEnumerable<TEntity>, string) Find(Filter<TEntity> filter);
 
         (IEnumerable<TEntity>, string) FindAll();
+
+        public void Generate(long count);
     }
 }

@@ -11,6 +11,7 @@ namespace RGR.Dal.Models.Entities
         public long CourseId { get; set; }
 
         [Column("course_name")]
+        [MaxLength(100)]
         public string CourseName { get; set; } = null!;
     }
 }

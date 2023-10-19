@@ -14,6 +14,7 @@ namespace RGR.MVC.UI
                     "Add",
                     "Update",
                     "Delete",
+                    "Generate",
                     "Back" };
         }
 

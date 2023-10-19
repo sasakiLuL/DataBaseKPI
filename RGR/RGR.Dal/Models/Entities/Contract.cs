@@ -14,6 +14,7 @@ namespace RGR.Dal.Models.Entities
         public DateTime TransactionTime { get; set; }
 
         [Column("payment_method")]
+        [MaxLength(300)]
         public string PaymentMethod { get; set; } = null!;
 
         [Column("user_id")]

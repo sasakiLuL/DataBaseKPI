@@ -13,5 +13,7 @@
         public void PrintEntities(IEnumerable<TEntity> entities, string query);
 
         public void PrintError(Exception exception);
+
+        public void PrintGenerated(long count);
     }
 }

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
+using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
 
 namespace RGR.Dal.Repos.BaseRepo
 {
@@ -64,19 +65,27 @@ namespace RGR.Dal.Repos.BaseRepo
 
             command.CommandText = $"EXPLAIN ANALYZE INSERT INTO {TableName} ({columnsString}) VALUES ({paramNamesString});";
 
-            Connection.Open();
-
-            using var reader = command.ExecuteReader();
-
             string time = "";
 
-            while (reader.Read())
+            try
             {
-                time = (string)reader.GetValue(0);
+                Connection.Open();
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    time = (string)reader.GetValue(0);
+                }
+
+                Connection.Close();
             }
-
-            Connection.Close();
-
+            finally
+            {
+                Connection.Close();
+                command.Dispose(); 
+            }
+            
             return time;
         }
 
@@ -93,18 +102,26 @@ namespace RGR.Dal.Repos.BaseRepo
                 Value = id
             });
 
-            Connection.Open();
-
-            using var reader = command.ExecuteReader();
-
             string time = "";
 
-            while (reader.Read())
+            try
             {
-                time = (string)reader.GetValue(0);
-            }
+                Connection.Open();
 
-            Connection.Close();
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    time = (string)reader.GetValue(0);
+                }
+
+                Connection.Close();
+            }
+            finally
+            {
+                Connection.Close();
+                command.Dispose();
+            }
 
             return time;
         }
@@ -132,18 +149,26 @@ namespace RGR.Dal.Repos.BaseRepo
 
             command.CommandText = $"EXPLAIN ANALYZE UPDATE {TableName} SET {variablesString} WHERE {Key} = @PARAM_ID;";
 
-            Connection.Open();
-
-            using var reader = command.ExecuteReader();
-
             string time = "";
 
-            while (reader.Read())
+            try
             {
-                time = (string)reader.GetValue(0);
-            }
+                Connection.Open();
 
-            Connection.Close();
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    time = (string)reader.GetValue(0);
+                }
+
+                Connection.Close();
+            }
+            finally
+            {
+                Connection.Close();
+                command.Dispose();
+            }
 
             return time;
         }
@@ -164,35 +189,52 @@ namespace RGR.Dal.Repos.BaseRepo
             var explainCommand = command.Clone();
             explainCommand.CommandText = "EXPLAIN ANALYZE " + explainCommand.CommandText;
 
-            Connection.Open();
-
-            using (NpgsqlDataReader reader = command.ExecuteReader())
+            try
             {
-                while (reader.Read())
+                Connection.Open();
+
+                using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
-                    TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
-
-                    Columns.ForEach(column =>
+                    while (reader.Read())
                     {
-                        Properties[column].SetValue(entity, reader[column] != DBNull.Value ? reader[column] : null);
-                    });
+                        TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
 
-                    Properties[Key].SetValue(entity, reader[Key]);
+                        Columns.ForEach(column =>
+                        {
+                            Properties[column].SetValue(entity, reader[column] != DBNull.Value ? reader[column] : null);
+                        });
 
-                    entities.Add(entity);
+                        Properties[Key].SetValue(entity, reader[Key]);
+
+                        entities.Add(entity);
+                    }
                 }
+            }
+            finally
+            {
+                Connection.Close();
             }
 
             string time = "";
+            NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
 
-            using NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
-
-            while (explainReader.Read())
+            try
             {
-                time = (string)explainReader.GetValue(0);
-            }
+                Connection.Open();
 
-            Connection.Close();
+                while (explainReader.Read())
+                {
+                    time = (string)explainReader.GetValue(0);
+                }
+
+                Connection.Close();
+            }
+            finally
+            {
+                explainReader.Close();
+                Connection.Close();
+                command.Dispose();
+            }
 
             return (entities, time);
         }
@@ -211,35 +253,52 @@ namespace RGR.Dal.Repos.BaseRepo
             var explainCommand = command.Clone();
             explainCommand.CommandText = "EXPLAIN ANALYZE " + explainCommand.CommandText;
 
-            Connection.Open();
-
-            using (NpgsqlDataReader reader = command.ExecuteReader())
+            try
             {
-                while (reader.Read())
+                Connection.Open();
+
+                using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
-                    TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
-
-                    Columns.ForEach(column =>
+                    while (reader.Read())
                     {
-                        Properties[column].SetValue(entity, reader[column] != DBNull.Value ? reader[column] : null);
-                    });
+                        TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
 
-                    Properties[Key].SetValue(entity, reader[Key]);
+                        Columns.ForEach(column =>
+                        {
+                            Properties[column].SetValue(entity, reader[column] != DBNull.Value ? reader[column] : null);
+                        });
 
-                    entities.Add(entity);
+                        Properties[Key].SetValue(entity, reader[Key]);
+
+                        entities.Add(entity);
+                    }
                 }
+            }
+            finally
+            {
+                Connection.Close();
             }
 
             string time = "";
+            NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
 
-            using NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
-
-            while (explainReader.Read())
+            try
             {
-                time = (string)explainReader.GetValue(0);
-            }
+                Connection.Open();
 
-            Connection.Close();
+                while (explainReader.Read())
+                {
+                    time = (string)explainReader.GetValue(0);
+                }
+
+                Connection.Close();
+            }
+            finally
+            {
+                explainReader.Close();
+                Connection.Close();
+                command.Dispose();
+            }
 
             return (entities, time);
         }
@@ -254,11 +313,11 @@ namespace RGR.Dal.Repos.BaseRepo
 
             List<string> query = new List<string>();
 
-            Columns.ForEach((column) => {
-                var fKey = Properties[column].GetCustomAttribute<ForeignKeyAttribute>().Name;
-                if (fKey != null)
+            foreach (string column in Columns)
+            {
+                if (Properties[Key].GetCustomAttribute<ForeignKeyAttribute>() !=  null)
                 {
-                    Type t = fKey switch
+                    Type t = Properties[Key].GetCustomAttribute<ForeignKeyAttribute>()?.Name switch
                     {
                         "Class" => typeof(Class),
                         "Coach" => typeof(Coach),
@@ -269,41 +328,57 @@ namespace RGR.Dal.Repos.BaseRepo
                         "User" => typeof(User),
                         _ => throw new NotImplementedException()
                     };
-                    query.Add(GenerateRandomForeightKeyQuery(t.GetProperties().Where(p => 
-                        p.GetCustomAttribute<KeyAttribute>() != null).FirstOrDefault().Name,
-                        t.GetCustomAttribute<TableAttribute>().Name));
 
-                    return;
+                    query.Add(GenerateRandomForeightKeyQuery(t.GetProperties().Where(p =>
+                                p.GetCustomAttribute<KeyAttribute>() != null).FirstOrDefault().Name,
+                                t.GetCustomAttribute<TableAttribute>().Name));
                 }
-
-                switch (Properties[column].DeclaringType.Name)
+                else
                 {
-                    case nameof(Int32):
-                        query.Add(GenerateRandomIntQuery(50));
-                        break;
+                    Random random = new Random();
 
-                    case nameof(DateTime):
-                        query.Add(GenerateRandomTimeStampQuery("2000-10-19 08:00:00", "2023-10-19 08:00:00"));
-                        break;
+                    switch (Properties[column].PropertyType.Name)
+                    {
+                        case nameof(Int32):
+                            query.Add(GenerateRandomIntQuery(1 + random.Next() % (Properties[column].GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 50)));
+                            break;
 
-                    case nameof(DateOnly):
-                        query.Add(GenerateDateQuery("2000-10-19", "2023-10-19"));
-                        break;
+                        case nameof(DateTime):
+                            query.Add(GenerateRandomTimeStampQuery("2000-10-19 08:00:00", "2023-10-19 08:00:00"));
+                            break;
 
-                    case nameof(String):
-                        query.Add(GenerateRandomStringQuery(20));
-                        break;
+                        case nameof(DateOnly):
+                            query.Add(GenerateDateQuery("2000-10-19", "2023-10-19"));
+                            break;
+
+                        case nameof(String):
+                            query.Add(GenerateRandomStringQuery(1 + random.Next() % (Properties[column].GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 50)));
+                            break;
+
+                        case nameof(Decimal):
+                            query.Add(GenerateRandomIntQuery(1 + random.Next() % (Properties[column].GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 50)));
+                            break;
+                    }
                 }
-            });
+            }
 
             string columnsString = AggregateStringWithSeparators(Columns, (str) => str.ToString());
             string paramNamesString = AggregateStringWithSeparators(query, (param) => param);
 
             command.CommandText = $"INSERT INTO {TableName} ({columnsString}) VALUES ({paramNamesString})";
 
-            for (long i = 0; i < count; i++) 
+            try
             {
-                command.ExecuteNonQuery();
+                Connection.Open();
+
+                for (long i = 0; i < count; i++)
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
 

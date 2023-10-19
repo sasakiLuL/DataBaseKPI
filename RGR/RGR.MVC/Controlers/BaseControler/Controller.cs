@@ -64,6 +64,19 @@ namespace RGR.MVC.Controlers.BaseControler
             }
         }
 
+        public void GenerateRecords(long count)
+        {
+            try
+            {
+                Repo.Generate(count);
+                View.PrintGenerated(count);
+            }
+            catch (Exception ex)
+            {
+                View.PrintError(ex);
+            }
+        }
+
         protected TEntity findOldById(long id)
         {
             var a = typeof(TEntity).GetProperties().Where(p => p.GetCustomAttributes<KeyAttribute>() != null).First();
