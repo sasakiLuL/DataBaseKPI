@@ -10,7 +10,7 @@ namespace RGR.MVC.Views
     {
         public ClassView() : base() { }
 
-        public void PrintFullClassInfo(List<(Class Entity, string CourseName, long ParticipantCount)> entities)
+        public void PrintFullClassInfo(List<(Class Entity, string CourseName, long ParticipantCount)> entities, string query)
         {
             var table = new Table();
 
@@ -46,6 +46,7 @@ namespace RGR.MVC.Views
             }
 
             AnsiConsole.Write(table);
+            AnsiConsole.Write(query);
         }
     }
 }

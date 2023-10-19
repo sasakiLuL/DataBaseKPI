@@ -10,7 +10,7 @@ namespace RGR.MVC.Views
     {
         public UserView() : base() { }
 
-        public void PrintUsersContracts(List<(User Entity, long ContractsCount)> entities)
+        public void PrintUsersContracts(List<(User Entity, long ContractsCount)> entities, string query)
         {
             var table = new Table();
 
@@ -44,6 +44,7 @@ namespace RGR.MVC.Views
             }
 
             AnsiConsole.Write(table);
+            AnsiConsole.Write(query);
         }
     }
 }

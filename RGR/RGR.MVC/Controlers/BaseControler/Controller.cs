@@ -19,8 +19,8 @@ namespace RGR.MVC.Controlers.BaseControler
 
         protected void PrintAllEntities()
         {
-            var entities = Repo.FindAll();
-            View.PrintEntities(entities.Item1);
+            var items = Repo.FindAll();
+            View.PrintEntities(items.Item1, items.Item2);
         }
 
         protected void UpdateEntity(long id, TEntity entity)
@@ -28,8 +28,8 @@ namespace RGR.MVC.Controlers.BaseControler
             try
             {
                 TEntity old = findOldById(id);
-                Repo.Update(id, entity);
-                View.PrintEntityUpdated(old, entity);
+                var time = Repo.Update(id, entity);
+                View.PrintEntityUpdated(old, entity, time);
             }
             catch (Exception ex)
             {
@@ -42,8 +42,8 @@ namespace RGR.MVC.Controlers.BaseControler
             try
             {
                 TEntity old = findOldById(id);
-                Repo.Delete(id);
-                View.PrintEntityDeleted(old);
+                var time = Repo.Delete(id);
+                View.PrintEntityDeleted(old, time);
             }
             catch (Exception ex)
             {
@@ -55,8 +55,8 @@ namespace RGR.MVC.Controlers.BaseControler
         {
             try
             {
-                Repo.Add(entity);
-                View.PrintEntityAdded(entity);
+                var time = Repo.Add(entity);
+                View.PrintEntityAdded(entity, time);
             }
             catch (Exception ex)
             {

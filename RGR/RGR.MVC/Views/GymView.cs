@@ -10,7 +10,7 @@ namespace RGR.MVC.Views
     {
         public GymView() : base() {}
 
-        public void ViewAllWithUserAndCoachesCount(List<(Gym Entity, long UsersCount, long CoachesCount)> entities)
+        public void ViewAllWithUserAndCoachesCount(List<(Gym Entity, long UsersCount, long CoachesCount)> entities, string query)
         {
             var table = new Table();
 
@@ -46,6 +46,7 @@ namespace RGR.MVC.Views
             }
 
             AnsiConsole.Write(table);
+            AnsiConsole.Write(query);
         }
     }
 }
