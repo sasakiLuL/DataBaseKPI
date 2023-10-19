@@ -10,7 +10,7 @@ namespace RGR.Dal.Repos
     {
         public UserRepo(NpgsqlConnection connection) : base(connection) { }
 
-        public IEnumerable<(User Entity, long ContractsCount)> FindUsersContracts(Filter<(User Entity, long ContractsCount)> filter)
+        public (IEnumerable<(User Entity, long ContractsCount)>, string) FindUsersContracts(Filter<(User Entity, long ContractsCount)> filter)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
@@ -24,6 +24,9 @@ namespace RGR.Dal.Repos
             };
 
             command.Parameters.AddRange(filter.Parameters.ToArray());
+
+            var explainCommand = command.Clone();
+            explainCommand.CommandText = "EXPLAIN ANALYZE " + explainCommand.CommandText;
 
             Connection.Open();
 
@@ -48,9 +51,18 @@ namespace RGR.Dal.Repos
                 resultList.Add(record);
             }
 
+            string time = "";
+
+            using NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
+
+            while (explainReader.Read())
+            {
+                time = (string)explainReader.GetValue(0);
+            }
+
             Connection.Close();
 
-            return resultList;
+            return (resultList, time);
         }
     }
 }

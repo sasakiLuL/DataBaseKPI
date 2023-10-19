@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
-using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
+using System.Security.Cryptography.X509Certificates;
 
 namespace RGR.Dal.Repos.BaseRepo
 {
@@ -45,7 +45,7 @@ namespace RGR.Dal.Repos.BaseRepo
             }
         }
 
-        public void Add(TEntity entity)
+        public string Add(TEntity entity)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
@@ -62,22 +62,31 @@ namespace RGR.Dal.Repos.BaseRepo
             string columnsString = AggregateStringWithSeparators(Columns, (str) => str.ToString());
             string paramNamesString = AggregateStringWithSeparators(command.Parameters, (param) => param.ParameterName);
 
-            command.CommandText = $"INSERT INTO {TableName} ({columnsString}) VALUES ({paramNamesString});";
+            command.CommandText = $"EXPLAIN ANALYZE INSERT INTO {TableName} ({columnsString}) VALUES ({paramNamesString});";
 
             Connection.Open();
 
-            command.ExecuteNonQuery();
- 
+            using var reader = command.ExecuteReader();
+
+            string time = "";
+
+            while (reader.Read())
+            {
+                time = (string)reader.GetValue(0);
+            }
+
             Connection.Close();
+
+            return time;
         }
 
-        public void Delete(long id)
+        public string Delete(long id)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
                 CommandType = CommandType.Text,
                 Connection = Connection,
-                CommandText = $"DELETE FROM {TableName} WHERE {Key} = @PARAM_ID;"
+                CommandText = $"EXECUTE ANALYZE DELETE FROM {TableName} WHERE {Key} = @PARAM_ID;"
             };
             command.Parameters.Add(new NpgsqlParameter() {
                 ParameterName = "@PARAM_ID",
@@ -86,19 +95,21 @@ namespace RGR.Dal.Repos.BaseRepo
 
             Connection.Open();
 
-            try
+            using var reader = command.ExecuteReader();
+
+            string time = "";
+
+            while (reader.Read())
             {
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
+                time = (string)reader.GetValue(0);
             }
 
             Connection.Close();
+
+            return time;
         }
 
-        public void Update(long id, TEntity entity)
+        public string Update(long id, TEntity entity)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
@@ -119,23 +130,25 @@ namespace RGR.Dal.Repos.BaseRepo
 
             string variablesString = AggregateStringWithSeparators(Columns.Zip(command.Parameters), (pair) => $"{pair.First} = {pair.Second.ParameterName}");
 
-            command.CommandText = $"UPDATE {TableName} SET {variablesString} WHERE {Key} = @PARAM_ID;";
+            command.CommandText = $"EXPLAIN ANALYZE UPDATE {TableName} SET {variablesString} WHERE {Key} = @PARAM_ID;";
 
             Connection.Open();
 
-            try
+            using var reader = command.ExecuteReader();
+
+            string time = "";
+
+            while (reader.Read())
             {
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
+                time = (string)reader.GetValue(0);
             }
 
             Connection.Close();
+
+            return time;
         }
 
-        public IEnumerable<TEntity> Find(Filter<TEntity> filter)
+        public (IEnumerable<TEntity>, string) Find(Filter<TEntity> filter)
         {
             IList<TEntity> entities = new List<TEntity>();
 
@@ -148,10 +161,13 @@ namespace RGR.Dal.Repos.BaseRepo
 
             command.Parameters.AddRange(filter.Parameters.ToArray());
 
+            var explainCommand = command.Clone();
+            explainCommand.CommandText = "EXPLAIN ANALYZE " + explainCommand.CommandText;
+
             Connection.Open();
 
-            using NpgsqlDataReader reader = command.ExecuteReader();
-
+            using NpgsqlDataReader reader = command.ExecuteReader(); 
+            
             while (reader.Read())
             {
                 TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
@@ -166,12 +182,21 @@ namespace RGR.Dal.Repos.BaseRepo
                 entities.Add(entity);
             }
 
+            string time = "";
+
+            using NpgsqlDataReader explainReader = command.ExecuteReader();
+
+            while (explainReader.Read())
+            {
+                time = (string)explainReader.GetValue(0);
+            }
+
             Connection.Close();
 
-            return entities;
+            return (entities, time);
         }
 
-        public IEnumerable<TEntity> FindAll()
+        public (IEnumerable<TEntity>, string) FindAll()
         {
             IList<TEntity> entities = new List<TEntity>();
 
@@ -181,6 +206,9 @@ namespace RGR.Dal.Repos.BaseRepo
                 Connection = Connection,
                 CommandText = $"SELECT * FROM {TableName} ORDER BY {Key};"
             };
+
+            var explainCommand = command.Clone();
+            explainCommand.CommandText = "EXPLAIN ANALYZE " + explainCommand.CommandText;
 
             Connection.Open();
 
@@ -200,9 +228,75 @@ namespace RGR.Dal.Repos.BaseRepo
                 entities.Add(entity);
             }
 
+            string time = "";
+
+            using NpgsqlDataReader explainReader = command.ExecuteReader();
+
+            while (explainReader.Read())
+            {
+                time = (string)explainReader.GetValue(0);
+            }
+
             Connection.Close();
 
-            return entities;
+            return (entities, time);
+        }
+
+        public void Generate(long count)
+        {
+            NpgsqlCommand command = new NpgsqlCommand()
+            {
+                CommandType = CommandType.Text,
+                Connection = Connection,
+            };
+
+            string query = string.Empty;
+
+            Columns.ForEach((column) => {
+                switch (Properties[column].PropertyType)
+                {
+
+                };
+            });
+
+            string columnsString = AggregateStringWithSeparators(Columns, (str) => str.ToString());
+            string paramNamesString = AggregateStringWithSeparators(command.Parameters, (param) => param.ParameterName);
+
+            command.CommandText = $"INSERT INTO {TableName} ({columnsString}) VALUES ({paramNamesString})";
+        }
+
+        protected string GenerateRandomStringQuery(int lenght)
+        {
+            string generateCharQuery = "chr(trunc(65 + random() * 25)::int)";
+            string resulQuery = string.Empty;
+            for (int i = 0; i < lenght; i++)
+            {
+                if (i != lenght - 1)
+                    resulQuery += generateCharQuery + " || ";
+                else
+                    resulQuery += generateCharQuery;
+            }
+            return generateCharQuery;
+        }
+
+        protected string GenerateRandomIntQuery(int maxValue)
+        {
+            return $"trunc(1 + random() * {maxValue})::int";
+        }
+
+        protected string GenerateRandomTimeStampQuery(string firstDate, string secondDate)
+        {
+            return $"timestamp '{firstDate}' + random() * (timestamp '{secondDate}' - timestamp '{firstDate}')";
+        }
+
+        protected string GenerateDateStampQuery(string firstDate, string secondDate)
+        {
+            return $"date '{firstDate}' + (random() * (date '{secondDate}' - date '{firstDate}'))::int";
+        }
+
+        protected string GenerateRandomForeightKeyQuery(string column, string table)
+        {
+            return $"(random() * (select max({column}) from {table}) + 1)::bigint";
         }
 
         private string AggregateStringWithSeparators<TOut>(IEnumerable<TOut> list, Func<TOut, string> convertor)

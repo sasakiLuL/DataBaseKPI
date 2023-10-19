@@ -19,7 +19,8 @@ namespace RGR.Dal.Models.Entities
         [Column("end_time")] 
         public DateTime EndTime { get; set; }
 
-        [Column("course_id")] 
+        [Column("course_id")]
+        [ForeignKey(nameof(Course))]
         public long CourseId { get; set; }
     }
 }

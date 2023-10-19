@@ -20,6 +20,7 @@ namespace RGR.Dal.Models.Entities
         public string? Description { get; set; } = string.Empty;
 
         [Column("gym_id")]
+        [ForeignKey(nameof(Gym))]
         public long GymId { get; set; }
     }
 }

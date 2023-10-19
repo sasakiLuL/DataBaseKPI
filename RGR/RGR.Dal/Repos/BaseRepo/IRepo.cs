@@ -11,14 +11,14 @@ namespace RGR.Dal.Repos.BaseRepo
 
         string TableName { get; }
 
-        void Add(TEntity entity);
+        string Add(TEntity entity);
 
-        void Delete(long id);
+        string Delete(long id);
 
-        void Update(long id, TEntity entity);
+        string Update(long id, TEntity entity);
 
-        IEnumerable<TEntity> Find(Filter<TEntity> filter);
+        (IEnumerable<TEntity>, string) Find(Filter<TEntity> filter);
 
-        IEnumerable<TEntity> FindAll();
+        (IEnumerable<TEntity>, string) FindAll();
     }
 }

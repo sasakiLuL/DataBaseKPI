@@ -10,7 +10,7 @@ namespace RGR.Dal.Repos
     {
         public GymRepo(NpgsqlConnection connection) : base(connection) { }
 
-        public IEnumerable<(Gym Entity, long UsersCount, long CoachesCount)> FindWithUserAndCoachesCount
+        public (IEnumerable<(Gym Entity, long UsersCount, long CoachesCount)>, string) FindWithUserAndCoachesCount
             (Filter<(Gym Entity, long UsersCount, long CoachesCount)> filter)
         {
             NpgsqlCommand command = new NpgsqlCommand()
@@ -38,6 +38,9 @@ namespace RGR.Dal.Repos
 
             command.Parameters.AddRange(filter.Parameters.ToArray());
 
+            var explainCommand = command.Clone();
+            explainCommand.CommandText = "EXPLAIN ANALYZE " + explainCommand.CommandText;
+
             Connection.Open();
 
             using NpgsqlDataReader reader = command.ExecuteReader();
@@ -63,9 +66,18 @@ namespace RGR.Dal.Repos
                 resultList.Add(record);
             }
 
+            string time = "";
+
+            using NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
+
+            while (explainReader.Read())
+            {
+                time = (string)explainReader.GetValue(0);
+            }
+
             Connection.Close();
 
-            return resultList;
+            return (resultList, time);
         }
     }
 }

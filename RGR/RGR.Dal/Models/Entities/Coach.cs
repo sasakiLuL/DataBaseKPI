@@ -23,6 +23,7 @@ namespace RGR.Dal.Models.Entities
         public DateTime EmploymentDate { get; set; }
 
         [Column("gym_id")]
+        [ForeignKey(nameof(Gym))]
         public long GymId { get; set; }
 
     }

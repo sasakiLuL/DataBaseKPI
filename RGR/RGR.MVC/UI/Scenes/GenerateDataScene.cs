@@ -1,23 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Spectre.Console;
 
 namespace RGR.MVC.UI.Scenes
 {
     public class GenerateDataScene : Scene
     {
-        public GenerateDataScene(UISettings settings) : base(settings) 
-        {
-            
-        }
+        public GenerateDataScene(UISettings settings) : base(settings) {}
 
         public override SceneType Type => SceneType.GenerateMenu;
 
         public override SceneType Render()
         {
-            throw new NotImplementedException();
+            //switch (AnsiConsole.Prompt
+            //(
+            //    //new SelectionPrompt<string>()
+            //    //{
+            //    //    DisabledStyle = Settings.ActiveColor,
+            //    //    HighlightStyle = Settings.SelectedColor
+            //    //}
+            //    //.Title($"[{Settings.HeaderColor}]Select table in which data will create![/]")
+            //    //.AddChoices(new[] {
+            //    //    "users",
+            //    //    "classes"
+            //    //    //""
+            //    //})
+            //    //.UseConverter(Settings.SceneTypeConverter)
+            //))
+            //{
+                
+            //}
+
+            return SceneType.StartMenu;
         }
     }
 }

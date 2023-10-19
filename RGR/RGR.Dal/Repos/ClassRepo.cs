@@ -10,7 +10,7 @@ namespace RGR.Dal.Repos
     {
         public ClassRepo(NpgsqlConnection connection) : base(connection) {}
 
-        public IEnumerable<(Class Entity, string CourseName, long ParticipantCount)> FindFullClassInfo(Filter<(Class Entity, string CourseName, long ParticipantCount)> filter)
+        public (IEnumerable<(Class Entity, string CourseName, long ParticipantCount)>, string) FindFullClassInfo(Filter<(Class Entity, string CourseName, long ParticipantCount)> filter)
         {
             NpgsqlCommand command = new NpgsqlCommand()
             {
@@ -28,6 +28,9 @@ namespace RGR.Dal.Repos
             };
 
             command.Parameters.AddRange(filter.Parameters.ToArray());
+
+            var explainCommand = command.Clone();
+            explainCommand.CommandText = "EXPLAIN ANALYZE " + explainCommand.CommandText;
 
             Connection.Open();
 
@@ -54,9 +57,18 @@ namespace RGR.Dal.Repos
                 resultList.Add(record);
             }
 
+            string time = "";
+
+            using NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
+
+            while (explainReader.Read())
+            {
+                time = (string)explainReader.GetValue(0);
+            }
+
             Connection.Close();
 
-            return resultList;
+            return (resultList, time);
         }
     }
 }

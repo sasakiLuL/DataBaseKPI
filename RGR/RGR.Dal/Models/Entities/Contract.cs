@@ -17,9 +17,11 @@ namespace RGR.Dal.Models.Entities
         public string PaymentMethod { get; set; } = null!;
 
         [Column("user_id")]
+        [ForeignKey(nameof(User))]
         public long? UserId { get; set; } = null;
 
-        [Column("contract_terms_id")] 
+        [Column("contract_terms_id")]
+        [ForeignKey(nameof(ContractTerms))]
         public long? ContractTermsId { get; set; } = null;
     }
 }
