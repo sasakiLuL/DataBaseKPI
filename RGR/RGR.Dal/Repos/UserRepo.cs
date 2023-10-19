@@ -30,25 +30,26 @@ namespace RGR.Dal.Repos
 
             Connection.Open();
 
-            using NpgsqlDataReader reader = command.ExecuteReader();
-
             List<(User Entity, long ContractsCount)> resultList = new();
 
-            while (reader.Read())
+            using (NpgsqlDataReader reader = command.ExecuteReader())
             {
-                (User Entity, long ContractsCount) record = new();
-                record.Entity = new User();
-
-                Columns.ForEach(column =>
+                while (reader.Read())
                 {
-                    Properties[column].SetValue(record.Entity, reader[column] != DBNull.Value ? reader[column] : null);
-                });
+                    (User Entity, long ContractsCount) record = new();
+                    record.Entity = new User();
 
-                Properties[Key].SetValue(record.Entity, reader[Key]);
+                    Columns.ForEach(column =>
+                    {
+                        Properties[column].SetValue(record.Entity, reader[column] != DBNull.Value ? reader[column] : null);
+                    });
 
-                record.ContractsCount = (long)reader["contracts_count"];
+                    Properties[Key].SetValue(record.Entity, reader[Key]);
 
-                resultList.Add(record);
+                    record.ContractsCount = (long)reader["contracts_count"];
+
+                    resultList.Add(record);
+                }
             }
 
             string time = "";

@@ -166,25 +166,26 @@ namespace RGR.Dal.Repos.BaseRepo
 
             Connection.Open();
 
-            using NpgsqlDataReader reader = command.ExecuteReader(); 
-            
-            while (reader.Read())
+            using (NpgsqlDataReader reader = command.ExecuteReader())
             {
-                TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
-
-                Columns.ForEach(column => 
+                while (reader.Read())
                 {
-                    Properties[column].SetValue(entity, reader[column]);
-                });
+                    TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
 
-                Properties[Key].SetValue(entity, reader[Key]);
+                    Columns.ForEach(column =>
+                    {
+                        Properties[column].SetValue(entity, reader[column] != DBNull.Value ? reader[column] : null);
+                    });
 
-                entities.Add(entity);
+                    Properties[Key].SetValue(entity, reader[Key]);
+
+                    entities.Add(entity);
+                }
             }
 
             string time = "";
 
-            using NpgsqlDataReader explainReader = command.ExecuteReader();
+            using NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
 
             while (explainReader.Read())
             {
@@ -212,25 +213,26 @@ namespace RGR.Dal.Repos.BaseRepo
 
             Connection.Open();
 
-            using NpgsqlDataReader reader = command.ExecuteReader();
-
-            while (reader.Read())
+            using (NpgsqlDataReader reader = command.ExecuteReader())
             {
-                TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
-
-                Columns.ForEach(column =>
+                while (reader.Read())
                 {
-                    Properties[column].SetValue(entity, reader[column] != DBNull.Value ? reader[column] : null);
-                });
+                    TEntity entity = ClassType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as TEntity;
 
-                Properties[Key].SetValue(entity, reader[Key]);
+                    Columns.ForEach(column =>
+                    {
+                        Properties[column].SetValue(entity, reader[column] != DBNull.Value ? reader[column] : null);
+                    });
 
-                entities.Add(entity);
+                    Properties[Key].SetValue(entity, reader[Key]);
+
+                    entities.Add(entity);
+                }
             }
 
             string time = "";
 
-            using NpgsqlDataReader explainReader = command.ExecuteReader();
+            using NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
 
             while (explainReader.Read())
             {

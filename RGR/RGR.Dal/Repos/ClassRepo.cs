@@ -33,28 +33,29 @@ namespace RGR.Dal.Repos
             explainCommand.CommandText = "EXPLAIN ANALYZE " + explainCommand.CommandText;
 
             Connection.Open();
-
-            using NpgsqlDataReader reader = command.ExecuteReader();
-
+            
             List<(Class Entity, string CourseName, long ParticipantCount)> resultList = new();
 
-            while (reader.Read())
+            using (NpgsqlDataReader reader = command.ExecuteReader())
             {
-                (Class Entity, string CourseName, long ParticipantCount) record = new();
-                record.Entity = new Class();
-
-                Columns.ForEach(column =>
+                while (reader.Read())
                 {
-                    Properties[column].SetValue(record.Entity, reader[column] != DBNull.Value ? reader[column] : null);
-                });
+                    (Class Entity, string CourseName, long ParticipantCount) record = new();
+                    record.Entity = new Class();
 
-                Properties[Key].SetValue(record.Entity, reader[Key]);
+                    Columns.ForEach(column =>
+                    {
+                        Properties[column].SetValue(record.Entity, reader[column] != DBNull.Value ? reader[column] : null);
+                    });
 
-                record.CourseName = (string)reader["CourseName"];
+                    Properties[Key].SetValue(record.Entity, reader[Key]);
 
-                record.ParticipantCount = (long)reader["ParticipantCount"];
+                    record.CourseName = (string)reader["CourseName"];
 
-                resultList.Add(record);
+                    record.ParticipantCount = (long)reader["ParticipantCount"];
+
+                    resultList.Add(record);
+                }
             }
 
             string time = "";

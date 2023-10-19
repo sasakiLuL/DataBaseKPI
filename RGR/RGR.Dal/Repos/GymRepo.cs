@@ -42,28 +42,29 @@ namespace RGR.Dal.Repos
             explainCommand.CommandText = "EXPLAIN ANALYZE " + explainCommand.CommandText;
 
             Connection.Open();
-
-            using NpgsqlDataReader reader = command.ExecuteReader();
-
+                
             List<(Gym Entity, long UsersCount, long CoachesCount)> resultList = new();
 
-            while (reader.Read())
+            using (NpgsqlDataReader reader = command.ExecuteReader())
             {
-                (Gym Entity, long UsersCount, long CoachesCount) record = new();
-                record.Entity = new Gym();
-
-                Columns.ForEach(column =>
+                while (reader.Read())
                 {
-                    Properties[column].SetValue(record.Entity, reader[column] != DBNull.Value ? reader[column] : null);
-                });
+                    (Gym Entity, long UsersCount, long CoachesCount) record = new();
+                    record.Entity = new Gym();
 
-                Properties[Key].SetValue(record.Entity, reader[Key]);
+                    Columns.ForEach(column =>
+                    {
+                        Properties[column].SetValue(record.Entity, reader[column] != DBNull.Value ? reader[column] : null);
+                    });
 
-                record.UsersCount = (long)reader["UsersCount"];
+                    Properties[Key].SetValue(record.Entity, reader[Key]);
 
-                record.CoachesCount = (long)reader["CoachesCount"];
+                    record.UsersCount = (long)reader["UsersCount"];
 
-                resultList.Add(record);
+                    record.CoachesCount = (long)reader["CoachesCount"];
+
+                    resultList.Add(record);
+                }
             }
 
             string time = "";
