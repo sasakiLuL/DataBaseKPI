@@ -118,6 +118,9 @@ namespace RGR.MVC.UI.Scenes
                             .ValidationErrorMessage("That's not a valid value!")
                         )
                     );
+                    AnsiConsole.Prompt(
+                        new TextPrompt<string>("Press to continue...").AllowEmpty()
+                    );
                     AnsiConsole.Clear();
                     return SceneType.ClassMenu;
 

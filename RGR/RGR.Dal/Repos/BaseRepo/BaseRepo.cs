@@ -216,18 +216,18 @@ namespace RGR.Dal.Repos.BaseRepo
             }
 
             string time = "";
-            NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
+            NpgsqlDataReader explainReader = null;
 
             try
             {
                 Connection.Open();
 
+                explainReader = explainCommand.ExecuteReader();
+
                 while (explainReader.Read())
                 {
                     time = (string)explainReader.GetValue(0);
                 }
-
-                Connection.Close();
             }
             finally
             {
@@ -280,18 +280,18 @@ namespace RGR.Dal.Repos.BaseRepo
             }
 
             string time = "";
-            NpgsqlDataReader explainReader = explainCommand.ExecuteReader();
+            NpgsqlDataReader explainReader = null;
 
             try
             {
                 Connection.Open();
 
+                explainReader = explainCommand.ExecuteReader();
+
                 while (explainReader.Read())
                 {
                     time = (string)explainReader.GetValue(0);
                 }
-
-                Connection.Close();
             }
             finally
             {
@@ -315,9 +315,9 @@ namespace RGR.Dal.Repos.BaseRepo
 
             foreach (string column in Columns)
             {
-                if (Properties[Key].GetCustomAttribute<ForeignKeyAttribute>() !=  null)
+                if (Properties[column].GetCustomAttribute<ForeignKeyAttribute>() !=  null)
                 {
-                    Type t = Properties[Key].GetCustomAttribute<ForeignKeyAttribute>()?.Name switch
+                    Type t = Properties[column].GetCustomAttribute<ForeignKeyAttribute>()?.Name switch
                     {
                         "Class" => typeof(Class),
                         "Coach" => typeof(Coach),
@@ -330,7 +330,8 @@ namespace RGR.Dal.Repos.BaseRepo
                     };
 
                     query.Add(GenerateRandomForeightKeyQuery(t.GetProperties().Where(p =>
-                                p.GetCustomAttribute<KeyAttribute>() != null).FirstOrDefault().Name,
+                                p.GetCustomAttribute<KeyAttribute>() != null).FirstOrDefault()
+                                .GetCustomAttribute<ColumnAttribute>()?.Name ?? GetType().Name,
                                 t.GetCustomAttribute<TableAttribute>().Name));
                 }
                 else
@@ -340,7 +341,7 @@ namespace RGR.Dal.Repos.BaseRepo
                     switch (Properties[column].PropertyType.Name)
                     {
                         case nameof(Int32):
-                            query.Add(GenerateRandomIntQuery(1 + random.Next() % (Properties[column].GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 50)));
+                            query.Add(GenerateRandomIntQuery(random.Next(1, (Properties[column].GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 50))));
                             break;
 
                         case nameof(DateTime):
@@ -352,11 +353,11 @@ namespace RGR.Dal.Repos.BaseRepo
                             break;
 
                         case nameof(String):
-                            query.Add(GenerateRandomStringQuery(1 + random.Next() % (Properties[column].GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 50)));
+                            query.Add(GenerateRandomStringQuery(random.Next(1, (Properties[column].GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 50))));
                             break;
 
                         case nameof(Decimal):
-                            query.Add(GenerateRandomIntQuery(1 + random.Next() % (Properties[column].GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 50)));
+                            query.Add(GenerateRandomIntQuery(random.Next(1, (Properties[column].GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 50))));
                             break;
                     }
                 }
@@ -393,7 +394,7 @@ namespace RGR.Dal.Repos.BaseRepo
                 else
                     resulQuery += generateCharQuery;
             }
-            return generateCharQuery;
+            return resulQuery;
         }
 
         protected string GenerateRandomIntQuery(int maxValue)
