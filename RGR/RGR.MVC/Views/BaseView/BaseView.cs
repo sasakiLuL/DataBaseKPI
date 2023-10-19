@@ -97,7 +97,7 @@ namespace RGR.MVC.Views.BaseView
                 );
 
             AnsiConsole.Write(table);
-            AnsiConsole.Write(new Markup($"[{RowColor.ToMarkup()}]" + query + "[/]"));
+            AnsiConsole.Write(new Markup($"[{RowColor.ToMarkup()}]" + query + "[/]\n"));
         }
 
         public void PrintEntityDeleted(TEntity entity, string query)
@@ -114,7 +114,7 @@ namespace RGR.MVC.Views.BaseView
             };
 
             AnsiConsole.Write(panel);
-            AnsiConsole.Write($"[{RowColor.ToMarkup()}]" + query + "[/]");
+            AnsiConsole.Write(new Markup($"[{RowColor.ToMarkup()}]" + query + "[/]\n"));
         }
 
         public void PrintEntityAdded(TEntity entity, string query)
@@ -131,7 +131,7 @@ namespace RGR.MVC.Views.BaseView
             };
 
             AnsiConsole.Write(panel);
-            AnsiConsole.Write($"[{RowColor.ToMarkup()}]" + query + "[/]");
+            AnsiConsole.Write(new Markup($"[{RowColor.ToMarkup()}]" + query + "[/]\n"));
         }
 
         public void PrintEntityUpdated(TEntity oldEntity, TEntity newEntity, string query)
@@ -149,7 +149,7 @@ namespace RGR.MVC.Views.BaseView
             };
 
             AnsiConsole.Write(panel);
-            AnsiConsole.Write($"[{RowColor.ToMarkup()}]" + query + "[/]");
+            AnsiConsole.Write(new Markup($"[{RowColor.ToMarkup()}]" + query + "[/]\n"));
         }
 
         public void PrintMissingEntityError(long id, Exception exception)
