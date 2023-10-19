@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RGR.MVC.Controlers.BaseControler
 {
-    public class Controller<TEntity> : IController where TEntity : class, new()
+    public class Controller<TEntity> where TEntity : class, new()
     {
         public IRepo<TEntity> Repo { get; private set; }
 
@@ -20,7 +20,7 @@ namespace RGR.MVC.Controlers.BaseControler
         protected void PrintAllEntities()
         {
             var entities = Repo.FindAll();
-            View.PrintEntities(entities);
+            View.PrintEntities(entities.Item1);
         }
 
         protected void UpdateEntity(long id, TEntity entity)
@@ -67,7 +67,7 @@ namespace RGR.MVC.Controlers.BaseControler
         protected TEntity findOldById(long id)
         {
             var a = typeof(TEntity).GetProperties().Where(p => p.GetCustomAttributes<KeyAttribute>() != null).First();
-            return Repo.FindAll().Where(e => (long?)a.GetValue(e) == id
+            return Repo.FindAll().Item1.Where(e => (long?)a.GetValue(e) == id
             ).First();
         }
     }

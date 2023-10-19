@@ -4,13 +4,13 @@
     {
         public void PrintMissingEntityError(long id, Exception exception);
 
-        public void PrintEntityAdded(TEntity entity);
+        public void PrintEntityAdded(TEntity entity, string query);
 
-        public void PrintEntityUpdated(TEntity oldEntity, TEntity newEntity);
+        public void PrintEntityUpdated(TEntity oldEntity, TEntity newEntity, string query);
 
-        public void PrintEntityDeleted(TEntity entity);
+        public void PrintEntityDeleted(TEntity entity, string query);
 
-        public void PrintEntities(IEnumerable<TEntity> entities);
+        public void PrintEntities(IEnumerable<TEntity> entities, string query);
 
         public void PrintError(Exception exception);
     }

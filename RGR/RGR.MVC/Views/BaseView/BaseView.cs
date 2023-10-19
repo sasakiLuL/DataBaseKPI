@@ -78,7 +78,7 @@ namespace RGR.MVC.Views.BaseView
             return new Columns(columnsValues.ToArray());
         }
 
-        public void PrintEntities(IEnumerable<TEntity> entities)
+        public void PrintEntities(IEnumerable<TEntity> entities, string query)
         {
             var table = new Table();
 
@@ -97,9 +97,10 @@ namespace RGR.MVC.Views.BaseView
                 );
 
             AnsiConsole.Write(table);
+            AnsiConsole.Write(query);
         }
 
-        public void PrintEntityDeleted(TEntity entity)
+        public void PrintEntityDeleted(TEntity entity, string query)
         {
             var rows = new Rows(
                 new Markup($"[{RowColor.ToMarkup()}]We have just removed [{RowColor.ToMarkup()}]{typeof(TEntity).Name}[/] from [white]{typeof(TEntity).GetCustomAttribute<TableAttribute>()?.Name ?? typeof(TEntity).Name}[/] table with values:[/]"),
@@ -113,9 +114,10 @@ namespace RGR.MVC.Views.BaseView
             };
 
             AnsiConsole.Write(panel);
+            AnsiConsole.Write(query);
         }
 
-        public void PrintEntityAdded(TEntity entity)
+        public void PrintEntityAdded(TEntity entity, string query)
         {
             var rows = new Rows(
                 new Markup($"[{RowColor.ToMarkup()}]Hooray! We have just added [{RowColor.ToMarkup()}]{typeof(TEntity).Name}[/] to our [white]{typeof(TEntity).GetCustomAttribute<TableAttribute>()?.Name ?? typeof(TEntity).Name}[/] table with value:[/]"),
@@ -129,9 +131,10 @@ namespace RGR.MVC.Views.BaseView
             };
 
             AnsiConsole.Write(panel);
+            AnsiConsole.Write(query);
         }
 
-        public void PrintEntityUpdated(TEntity oldEntity, TEntity newEntity)
+        public void PrintEntityUpdated(TEntity oldEntity, TEntity newEntity, string query)
         {
             var rows = new Rows(
                 new Markup($"[{RowColor.ToMarkup()}]Changes:[/]"),
@@ -146,6 +149,7 @@ namespace RGR.MVC.Views.BaseView
             };
 
             AnsiConsole.Write(panel);
+            AnsiConsole.Write(query);
         }
 
         public void PrintMissingEntityError(long id, Exception exception)
