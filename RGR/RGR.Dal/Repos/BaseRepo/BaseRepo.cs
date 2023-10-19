@@ -1,10 +1,10 @@
 ﻿using Npgsql;
 using RGR.Dal.Filters;
+using RGR.Dal.Models.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 
 namespace RGR.Dal.Repos.BaseRepo
 {
@@ -250,19 +250,59 @@ namespace RGR.Dal.Repos.BaseRepo
                 Connection = Connection,
             };
 
-            string query = string.Empty;
+            List<string> query = new List<string>();
 
             Columns.ForEach((column) => {
-                switch (Properties[column].PropertyType)
+                var fKey = Properties[column].GetCustomAttribute<ForeignKeyAttribute>().Name;
+                if (fKey != null)
                 {
+                    Type t = fKey switch
+                    {
+                        "Class" => typeof(Class),
+                        "Coach" => typeof(Coach),
+                        "Contract" => typeof(Contract),
+                        "ContractTerms" => typeof(ContractTerms),
+                        "Course" => typeof(Course),
+                        "Gym" => typeof(Gym),
+                        "User" => typeof(User),
+                        _ => throw new NotImplementedException()
+                    };
+                    query.Add(GenerateRandomForeightKeyQuery(t.GetProperties().Where(p => 
+                        p.GetCustomAttribute<KeyAttribute>() != null).FirstOrDefault().Name,
+                        t.GetCustomAttribute<TableAttribute>().Name));
 
-                };
+                    return;
+                }
+
+                switch (Properties[column].DeclaringType.Name)
+                {
+                    case nameof(Int32):
+                        query.Add(GenerateRandomIntQuery(50));
+                        break;
+
+                    case nameof(DateTime):
+                        query.Add(GenerateRandomTimeStampQuery("2000-10-19 08:00:00", "2023-10-19 08:00:00"));
+                        break;
+
+                    case nameof(DateOnly):
+                        query.Add(GenerateDateQuery("2000-10-19", "2023-10-19"));
+                        break;
+
+                    case nameof(String):
+                        query.Add(GenerateRandomStringQuery(20));
+                        break;
+                }
             });
 
             string columnsString = AggregateStringWithSeparators(Columns, (str) => str.ToString());
-            string paramNamesString = AggregateStringWithSeparators(command.Parameters, (param) => param.ParameterName);
+            string paramNamesString = AggregateStringWithSeparators(query, (param) => param);
 
             command.CommandText = $"INSERT INTO {TableName} ({columnsString}) VALUES ({paramNamesString})";
+
+            for (long i = 0; i < count; i++) 
+            {
+                command.ExecuteNonQuery();
+            }
         }
 
         protected string GenerateRandomStringQuery(int lenght)
@@ -289,7 +329,7 @@ namespace RGR.Dal.Repos.BaseRepo
             return $"timestamp '{firstDate}' + random() * (timestamp '{secondDate}' - timestamp '{firstDate}')";
         }
 
-        protected string GenerateDateStampQuery(string firstDate, string secondDate)
+        protected string GenerateDateQuery(string firstDate, string secondDate)
         {
             return $"date '{firstDate}' + (random() * (date '{secondDate}' - date '{firstDate}'))::int";
         }
