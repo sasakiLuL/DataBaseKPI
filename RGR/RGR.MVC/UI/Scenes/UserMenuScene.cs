@@ -27,7 +27,7 @@ namespace RGR.MVC.UI.Scenes
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
                     AnsiConsole.Clear();
-                    return SceneType.GymMenu;
+                    return SceneType.UserMenu;
 
                 case "Add":
                     Controller.AddUser(
