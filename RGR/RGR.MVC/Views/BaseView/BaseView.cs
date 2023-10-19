@@ -182,5 +182,19 @@ namespace RGR.MVC.Views.BaseView
 
             AnsiConsole.Write(panel);
         }
+
+        public void PrintGenerated(long count)
+        {
+            var rows = new Rows(
+                new Markup($"[{RowColor.ToMarkup()}]Generated {count}[/]")
+            );
+
+            Panel panel = new Panel(rows)
+            {
+                Header = new PanelHeader($"[{ColumnColor.ToMarkup()}]Generated values![/]"),
+            };
+
+            AnsiConsole.Write(panel);
+        }
     }
 }
