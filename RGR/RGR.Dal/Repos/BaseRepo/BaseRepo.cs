@@ -86,7 +86,7 @@ namespace RGR.Dal.Repos.BaseRepo
             {
                 CommandType = CommandType.Text,
                 Connection = Connection,
-                CommandText = $"EXECUTE ANALYZE DELETE FROM {TableName} WHERE {Key} = @PARAM_ID;"
+                CommandText = $"EXPLAIN ANALYZE DELETE FROM {TableName} WHERE {Key} = @PARAM_ID;"
             };
             command.Parameters.Add(new NpgsqlParameter() {
                 ParameterName = "@PARAM_ID",

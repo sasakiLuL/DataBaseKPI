@@ -108,7 +108,7 @@ namespace RGR.MVC.UI.Scenes
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
                     AnsiConsole.Clear();
-                    return SceneType.GymMenu;
+                    return SceneType.UserMenu;
 
                 case "Update":
                     Controller.UpdateUser(
@@ -194,7 +194,7 @@ namespace RGR.MVC.UI.Scenes
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
                     AnsiConsole.Clear();
-                    return SceneType.GymMenu;
+                    return SceneType.UserMenu;
 
                 case "Delete":
                     Controller.DeleteUser(
@@ -208,7 +208,7 @@ namespace RGR.MVC.UI.Scenes
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
                     AnsiConsole.Clear();
-                    return SceneType.ClassMenu;
+                    return SceneType.UserMenu;
 
                 case "Back":
                     AnsiConsole.Clear();
