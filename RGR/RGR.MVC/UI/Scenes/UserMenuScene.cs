@@ -216,12 +216,12 @@ namespace RGR.MVC.UI.Scenes
 
                 default:
                     DateTime firstInput = AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter first[{Settings.HeaderColor}] id[/] bound:")
+                            new TextPrompt<DateTime>($"Enter first[{Settings.HeaderColor}] timestamp[/] bound:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         );
                     DateTime secondInput = AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter second[{Settings.HeaderColor}] id[/] bound:")
+                            new TextPrompt<DateTime>($"Enter second[{Settings.HeaderColor}] timestamp[/] bound:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                             .Validate(s =>
