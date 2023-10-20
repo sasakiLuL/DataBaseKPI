@@ -18,7 +18,7 @@ namespace RGR.MVC.UI
                     "Back" };
         }
 
-        protected string GetPrompt()
+        protected string GetPrompt(string tableName)
         {
             return AnsiConsole.Prompt
             (
@@ -27,7 +27,7 @@ namespace RGR.MVC.UI
                     DisabledStyle = Settings.ActiveColor,
                     HighlightStyle = Settings.SelectedColor
                 }
-                .Title($"[{Settings.HeaderColor}]Select operation![/]")
+                .Title($"[{Settings.HeaderColor}]Select operation in {tableName} table![/]")
                 .AddChoices(MenuChoices)
             );
         }

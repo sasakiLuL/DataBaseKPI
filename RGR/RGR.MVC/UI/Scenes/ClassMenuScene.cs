@@ -19,7 +19,7 @@ namespace RGR.MVC.UI.Scenes
 
         public override SceneType Render()
         {
-            switch (GetPrompt())
+            switch (GetPrompt("classes"))
             {
                 case "Find all":
                     Controller.PrintAllClasses();

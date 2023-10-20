@@ -16,7 +16,7 @@ namespace RGR.MVC.UI.Scenes
 
         public override SceneType Render()
         {
-            switch (GetPrompt())
+            switch (GetPrompt("contracts"))
             {
                 case "Find all":
                     Controller.PrintAllContracts();
