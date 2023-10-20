@@ -152,23 +152,6 @@ namespace RGR.MVC.Views.BaseView
             AnsiConsole.Write(new Markup($"[{RowColor.ToMarkup()}]" + query + "[/]\n"));
         }
 
-        public void PrintMissingEntityError(long id, Exception exception)
-        {
-            var rows = new Rows(
-                new Markup($"[{ErrorColor.ToMarkup()}]We are sorry, we have no [{RowColor.ToMarkup()}]{typeof(TEntity).Name}[/] with id value:[/]"),
-                new Markup(id.ToString(), new Style(foreground: RowColor)),
-                new Markup($"[{ErrorColor.ToMarkup()}]Exception: {exception.Message}[/]")
-            );
-
-            Panel panel = new Panel(rows)
-            {
-                Header = new PanelHeader($"[{ErrorColor.ToMarkup()}]Missing {typeof(TEntity).Name} Error![/]"),
-                Expand = true
-            };
-
-            AnsiConsole.Write(panel);
-        }
-
         public void PrintError(Exception exception)
         {
             var rows = new Rows(

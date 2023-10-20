@@ -1,5 +1,7 @@
-﻿using RGR.Dal.Repos.BaseRepo;
+﻿using Npgsql;
+using RGR.Dal.Repos.BaseRepo;
 using RGR.MVC.Views.BaseView;
+using Spectre.Console;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -33,7 +35,7 @@ namespace RGR.MVC.Controlers.BaseControler
             }
             catch (Exception ex)
             {
-                View.PrintMissingEntityError(id, ex);
+                View.PrintError(ex);
             }
         }
 
@@ -47,7 +49,7 @@ namespace RGR.MVC.Controlers.BaseControler
             }
             catch (Exception ex)
             {
-                View.PrintMissingEntityError(id, ex);
+                View.PrintError(ex);
             }
         }
 
@@ -76,7 +78,7 @@ namespace RGR.MVC.Controlers.BaseControler
                 View.PrintError(ex);
             }
         }
-
+        
         protected TEntity findOldById(long id)
         {
             var a = typeof(TEntity).GetProperties().Where(p => p.GetCustomAttributes<KeyAttribute>() != null).First();

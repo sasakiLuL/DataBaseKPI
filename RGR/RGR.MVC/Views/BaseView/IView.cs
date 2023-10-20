@@ -2,8 +2,6 @@
 {
     public interface IView<TEntity> where TEntity: class, new()
     {
-        public void PrintMissingEntityError(long id, Exception exception);
-
         public void PrintEntityAdded(TEntity entity, string query);
 
         public void PrintEntityUpdated(TEntity oldEntity, TEntity newEntity, string query);
