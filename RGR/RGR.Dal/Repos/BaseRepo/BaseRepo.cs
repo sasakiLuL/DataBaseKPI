@@ -414,7 +414,7 @@ namespace RGR.Dal.Repos.BaseRepo
 
         protected string GenerateRandomForeightKeyQuery(string column, string table)
         {
-            return $"(random() * (select max({column}) from {table}) + 1)::bigint";
+            return $"(select f_id from trunc(1 + random() * (select max({column}) from {table})) as f_id inner join {table} on f_id = {table}.{column})::bigint";
         }
 
         private string AggregateStringWithSeparators<TOut>(IEnumerable<TOut> list, Func<TOut, string> convertor)
