@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0zE3kHXCzzXr4usL+naZufHDij9Szn5nxYan2wnzTcwubilFnPGcErosqHBkT0aRlaxMz3uNHZ4+YMAHlBT3UQ==",
+  "dgSpecHash": "D4LTisX7v2jLcbS9lcc5B4Jz/Z/zWA8MbePI1KxpAwAV3lQfEyJzytwPUprkALcYSWp7JL7XpT/wm45lWd+TeA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\sasha\\Desktop\\KPI\\DataBaseKPI\\RGR\\RGR.Dal\\RGR.Dal.csproj",
+  "projectFilePath": "C:\\Users\\sasha\\Desktop\\KPI\\DB\\DataBaseKPI\\RGR\\RGR.Dal\\RGR.Dal.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\sasha\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
@@ -19,7 +19,10 @@
     "C:\\Users\\sasha\\.nuget\\packages\\system.runtime.extensions\\4.3.0\\system.runtime.extensions.4.3.0.nupkg.sha512",
     "C:\\Users\\sasha\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\sasha\\.nuget\\packages\\system.text.regularexpressions\\4.3.0\\system.text.regularexpressions.4.3.0.nupkg.sha512",
-    "C:\\Users\\sasha\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512"
+    "C:\\Users\\sasha\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
+    "C:\\Users\\sasha\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\sasha\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\sasha\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512"
   ],
   "logs": []
 }

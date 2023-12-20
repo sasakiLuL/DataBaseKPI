@@ -1199,11 +1199,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sasha\\Desktop\\KPI\\DataBaseKPI\\RGR\\RGR.Dal\\RGR.Dal.csproj",
+      "projectUniqueName": "C:\\Users\\sasha\\Desktop\\KPI\\DB\\DataBaseKPI\\RGR\\RGR.Dal\\RGR.Dal.csproj",
       "projectName": "RGR.Dal",
-      "projectPath": "C:\\Users\\sasha\\Desktop\\KPI\\DataBaseKPI\\RGR\\RGR.Dal\\RGR.Dal.csproj",
+      "projectPath": "C:\\Users\\sasha\\Desktop\\KPI\\DB\\DataBaseKPI\\RGR\\RGR.Dal\\RGR.Dal.csproj",
       "packagesPath": "C:\\Users\\sasha\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sasha\\Desktop\\KPI\\DataBaseKPI\\RGR\\RGR.Dal\\obj\\",
+      "outputPath": "C:\\Users\\sasha\\Desktop\\KPI\\DB\\DataBaseKPI\\RGR\\RGR.Dal\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\sasha\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1252,12 +1252,26 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[7.0.14, 7.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[7.0.14, 7.0.14]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[7.0.14, 7.0.14]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
