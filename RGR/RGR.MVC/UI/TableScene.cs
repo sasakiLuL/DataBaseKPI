@@ -1,5 +1,4 @@
-﻿using RGR.MVC.Controlers.BaseControler;
-using Spectre.Console;
+﻿using Spectre.Console;
 
 namespace RGR.MVC.UI
 {
@@ -14,7 +13,6 @@ namespace RGR.MVC.UI
                     "Add",
                     "Update",
                     "Delete",
-                    "Generate",
                     "Back" };
         }
 

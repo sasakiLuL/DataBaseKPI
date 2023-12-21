@@ -1,4 +1,5 @@
-﻿using RGR.MVC.Controlers;
+﻿using RGR.Dal.Models;
+using RGR.MVC.Controlers;
 using Spectre.Console;
 
 namespace RGR.MVC.UI.Scenes
@@ -7,11 +8,11 @@ namespace RGR.MVC.UI.Scenes
     {
         public override SceneType Type => SceneType.ContractTermsMenu;
 
-        public ContractTermsController Controller { get; set; }
+        private readonly Controller<ContractsTerm> _controller;
 
-        public ContractTermsMenuScene(UISettings settings, ContractTermsController controller) : base(settings)
+        public ContractTermsMenuScene(UISettings settings, Controller<ContractsTerm> controller) : base(settings)
         {
-            Controller = controller;
+            _controller = controller;
         }
 
         public override SceneType Render()
@@ -19,7 +20,7 @@ namespace RGR.MVC.UI.Scenes
             switch (GetPrompt("contracts_terms"))
             {
                 case "Find all":
-                    Controller.PrintAllContractsTerms();
+                    _controller.PrintAllEntities();
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
@@ -27,8 +28,8 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.ContractTermsMenu;
 
                 case "Add":
-                    Controller.AddContractTerms(
-                        AnsiConsole.Prompt(
+                    _controller.AddEntity( new() {
+                        ContractName= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]contract name[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -39,12 +40,12 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 100");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        Price= AnsiConsole.Prompt(
                             new TextPrompt<decimal>($"Enter [{Settings.HeaderColor}]price[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
-                        AnsiConsole.Prompt(
+                        Description= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]description[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -55,11 +56,11 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 100");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        GymId= AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter [{Settings.HeaderColor}]gym id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
-                        )
+                        ) }
                     );
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
@@ -68,13 +69,13 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.ContractTermsMenu;
 
                 case "Update":
-                    Controller.UpdateContractTerms(
-                        AnsiConsole.Prompt(
+                    _controller.UpdateEntity( new() {
+                        ContractTermsId = AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter [{Settings.HeaderColor}]id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
-                        AnsiConsole.Prompt(
+                        ContractName= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]contract name[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -85,12 +86,12 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 100");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        Price =AnsiConsole.Prompt(
                             new TextPrompt<decimal>($"Enter [{Settings.HeaderColor}]price[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
-                        AnsiConsole.Prompt(
+                        Description= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]description[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -102,11 +103,11 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 100");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        GymId= AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter [{Settings.HeaderColor}]gym id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
-                        )
+                        ) }
                     );
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
@@ -115,26 +116,12 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.ContractTermsMenu;
 
                 case "Delete":
-                    Controller.DeleteContractTerms(
-                        AnsiConsole.Prompt(
+                    _controller.DeleteEntity( new() {
+                        ContractTermsId= AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter class[{Settings.HeaderColor}] id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
-                        )
-                    );
-                    AnsiConsole.Prompt(
-                        new TextPrompt<string>("Press to continue...").AllowEmpty()
-                    );
-                    AnsiConsole.Clear();
-                    return SceneType.ContractTermsMenu;
-
-                case "Generate":
-                    Controller.GenerateRecords(
-                        AnsiConsole.Prompt(
-                            new TextPrompt<long>($"Enter records[{Settings.HeaderColor}] count[/]:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                        )
+                        )}
                     );
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
@@ -143,6 +130,7 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.ContractTermsMenu;
 
                 default:
+                    AnsiConsole.Clear();
                     return SceneType.StartMenu;
             };
         }

@@ -1,4 +1,5 @@
-﻿using RGR.MVC.Controlers;
+﻿using RGR.Dal.Models;
+using RGR.MVC.Controlers;
 using Spectre.Console;
 
 namespace RGR.MVC.UI.Scenes
@@ -7,14 +8,11 @@ namespace RGR.MVC.UI.Scenes
     {
         public override SceneType Type => SceneType.UserMenu;
 
-        public UserController Controller { get; set; }
+        private readonly Controller<User> _controller;
 
-        public UserMenuScene(UISettings settings, UserController controller) : base(settings)
+        public UserMenuScene(UISettings settings, Controller<User> controller) : base(settings)
         {
-            Controller = controller;
-            var MenuChoicesList = MenuChoices.ToList();
-            MenuChoicesList.Insert(0, $"Find users contracts count[{Settings.UnactiveColor}] (by date range)[/]");
-            MenuChoices = MenuChoicesList.ToArray();
+            _controller = controller;
         }
 
         public override SceneType Render()
@@ -22,7 +20,7 @@ namespace RGR.MVC.UI.Scenes
             switch (GetPrompt("users"))
             {
                 case "Find all":
-                    Controller.PrintAllUsers();
+                    _controller.PrintAllEntities();
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
@@ -30,8 +28,8 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.UserMenu;
 
                 case "Add":
-                    Controller.AddUser(
-                        AnsiConsole.Prompt(
+                    _controller.AddEntity( new() {
+                        FirstName = AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]first name[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -42,7 +40,7 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 100");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        LastName= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]last name[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -53,7 +51,7 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 100");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        Sex= AnsiConsole.Prompt(
                             new TextPrompt<int>($"Enter [{Settings.HeaderColor}]sex[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -64,12 +62,12 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 100");
                             })
                         ),
-                        AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]date of birth[/]:")
+                        DateOfBirth= AnsiConsole.Prompt(
+                            new TextPrompt<DateOnly>($"Enter [{Settings.HeaderColor}]date of birth[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
-                        AnsiConsole.Prompt(
+                        Address= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]address[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -80,7 +78,7 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 256");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        Phone= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]phone number[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -91,7 +89,7 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 16");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        Email= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]email[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -102,7 +100,7 @@ namespace RGR.MVC.UI.Scenes
                                     return ValidationResult.Success();
                                 return ValidationResult.Error("String should be not longer than 256");
                             })
-                        )
+                        ) }
                     );
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
@@ -111,13 +109,13 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.UserMenu;
 
                 case "Update":
-                    Controller.UpdateUser(
-                        AnsiConsole.Prompt(
+                    _controller.UpdateEntity( new() { 
+                        UserId= AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter [{Settings.HeaderColor}]id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
-                        AnsiConsole.Prompt(
+                        FirstName = AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]first name[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -128,7 +126,7 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 100");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        LastName= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]last name[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -139,7 +137,7 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 100");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        Sex= AnsiConsole.Prompt(
                             new TextPrompt<int>($"Enter [{Settings.HeaderColor}]sex[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -150,12 +148,12 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 100");
                             })
                         ),
-                        AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]date of birth[/]:")
+                        DateOfBirth= AnsiConsole.Prompt(
+                            new TextPrompt<DateOnly>($"Enter [{Settings.HeaderColor}]date of birth[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
-                        AnsiConsole.Prompt(
+                        Address= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]address[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -166,7 +164,7 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 256");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        Phone= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]phone number[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -177,7 +175,7 @@ namespace RGR.MVC.UI.Scenes
                                 return ValidationResult.Error("String should be not longer than 16");
                             })
                         ),
-                        AnsiConsole.Prompt(
+                        Email= AnsiConsole.Prompt(
                             new TextPrompt<string>($"Enter [{Settings.HeaderColor}]email[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
@@ -188,7 +186,7 @@ namespace RGR.MVC.UI.Scenes
                                     return ValidationResult.Success();
                                 return ValidationResult.Error("String should be not longer than 256");
                             })
-                        )
+                        ) }
                     );
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
@@ -197,12 +195,12 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.UserMenu;
 
                 case "Delete":
-                    Controller.DeleteUser(
-                        AnsiConsole.Prompt(
+                    _controller.DeleteEntity( new() {
+                        UserId= AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter user[{Settings.HeaderColor}] id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
-                        )
+                        )}
                     );
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
@@ -214,44 +212,9 @@ namespace RGR.MVC.UI.Scenes
                     AnsiConsole.Clear();
                     return SceneType.StartMenu;
 
-                case "Generate":
-                    Controller.GenerateRecords(
-                        AnsiConsole.Prompt(
-                            new TextPrompt<long>($"Enter records[{Settings.HeaderColor}] count[/]:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                        )
-                    );
-                    AnsiConsole.Prompt(
-                        new TextPrompt<string>("Press to continue...").AllowEmpty()
-                    );
-                    AnsiConsole.Clear();
-                    return SceneType.UserMenu;
-
                 default:
-                    DateTime firstInput = AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter first[{Settings.HeaderColor}] timestamp[/] bound:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                        );
-                    DateTime secondInput = AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter second[{Settings.HeaderColor}] timestamp[/] bound:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                            .Validate(s =>
-                            {
-                                if (s > firstInput)
-                                    return ValidationResult.Success();
-                                else
-                                    return ValidationResult.Error("First value greater than second!");
-                            })
-                        );
-                    Controller.PrintUsersContractsByDateOfBirth(firstInput, secondInput);
-                    AnsiConsole.Prompt(
-                        new TextPrompt<string>("Press to continue...").AllowEmpty()
-                    );
                     AnsiConsole.Clear();
-                    return SceneType.UserMenu;
+                    return SceneType.StartMenu;
             };
         }
     }

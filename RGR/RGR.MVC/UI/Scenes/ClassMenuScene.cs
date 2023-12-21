@@ -1,4 +1,6 @@
-﻿using RGR.MVC.Controlers;
+﻿using NpgsqlTypes;
+using RGR.Dal.Models;
+using RGR.MVC.Controlers;
 using Spectre.Console;
 
 namespace RGR.MVC.UI.Scenes
@@ -7,14 +9,11 @@ namespace RGR.MVC.UI.Scenes
     {
         public override SceneType Type => SceneType.ClassMenu;
 
-        public ClassController Controller { get; set; }
+        private readonly Controller<Class> _controller;
 
-        public ClassMenuScene(UISettings settings, ClassController controller) : base(settings)
+        public ClassMenuScene(UISettings settings, Controller<Class> controller) : base(settings)
         {
-            Controller = controller;
-            var MenuChoicesList = MenuChoices.ToList();
-            MenuChoicesList.Insert(0, $"Find full class info [{Settings.UnactiveColor}](by id range)[/]");
-            MenuChoices = MenuChoicesList.ToArray();
+            _controller = controller;
         }
 
         public override SceneType Render()
@@ -22,7 +21,7 @@ namespace RGR.MVC.UI.Scenes
             switch (GetPrompt("classes"))
             {
                 case "Find all":
-                    Controller.PrintAllClasses();
+                    _controller.PrintAllEntities();
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
@@ -30,28 +29,32 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.ClassMenu;
 
                 case "Add":
-                    Controller.AddClass(
+                    _controller.AddEntity(
+                        new Class(
                         AnsiConsole.Prompt(
                             new TextPrompt<int>($"Enter [{Settings.HeaderColor}]maximal participants[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
+                        new NpgsqlRange<DateTime>
+                        (
+                            AnsiConsole.Prompt(
+                                new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]start time[/]:")
+                                .PromptStyle(Settings.HeaderColor)
+                                .ValidationErrorMessage("That's not a valid value!")
+                            ),
+                            AnsiConsole.Prompt(
+                                new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]end time[/]:")
+                                .PromptStyle(Settings.HeaderColor)
+                                .ValidationErrorMessage("That's not a valid value!")
+                            )
+                        ),
                         AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter [{Settings.HeaderColor}]course id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
-                        ),
-                        AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]start time[/]:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                        ),
-                        AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]end time[/]:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
                         )
-                    );
+                    ));
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
@@ -59,33 +62,38 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.ClassMenu;
 
                 case "Update":
-                    Controller.UpdateClass(
-                        AnsiConsole.Prompt(
+                    _controller.UpdateEntity(
+                        new Class()
+                        {
+                            ClassId = AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter class[{Settings.HeaderColor}] id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
-                        AnsiConsole.Prompt(
+                            MaxParticipants = AnsiConsole.Prompt(
                             new TextPrompt<int>($"Enter [{Settings.HeaderColor}]maximal participants[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
-                        AnsiConsole.Prompt(
+                            CourseId = AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter [{Settings.HeaderColor}]course id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         ),
-                        AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]start time[/]:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                        ),
-                        AnsiConsole.Prompt(
-                            new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]end time[/]:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
+                            Duration = new NpgsqlRange<DateTime>
+                        (
+                            AnsiConsole.Prompt(
+                                new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]start time[/]:")
+                                .PromptStyle(Settings.HeaderColor)
+                                .ValidationErrorMessage("That's not a valid value!")
+                            ),
+                            AnsiConsole.Prompt(
+                                new TextPrompt<DateTime>($"Enter [{Settings.HeaderColor}]end time[/]:")
+                                .PromptStyle(Settings.HeaderColor)
+                                .ValidationErrorMessage("That's not a valid value!")
+                            )
                         )
-                    );
+                        });
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
@@ -93,31 +101,14 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.ClassMenu;
 
                 case "Delete":
-                    Controller.DeleteClass(
-                        AnsiConsole.Prompt(
+                    _controller.DeleteEntity( new Class()
+                    {
+                        ClassId = AnsiConsole.Prompt(
                             new TextPrompt<long>($"Enter class[{Settings.HeaderColor}] id[/]:")
                             .PromptStyle(Settings.HeaderColor)
                             .ValidationErrorMessage("That's not a valid value!")
                         )
-                    );
-                    AnsiConsole.Prompt(
-                        new TextPrompt<string>("Press to continue...").AllowEmpty()
-                    );
-                    AnsiConsole.Clear();
-                    return SceneType.ClassMenu;
-
-                case "Back":
-                    AnsiConsole.Clear();
-                    return SceneType.StartMenu;
-
-                case "Generate":
-                    Controller.GenerateRecords(
-                        AnsiConsole.Prompt(
-                            new TextPrompt<long>($"Enter records[{Settings.HeaderColor}] count[/]:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                        )
-                    );
+                    });
                     AnsiConsole.Prompt(
                         new TextPrompt<string>("Press to continue...").AllowEmpty()
                     );
@@ -125,29 +116,8 @@ namespace RGR.MVC.UI.Scenes
                     return SceneType.ClassMenu;
 
                 default:
-                    long firstInput = AnsiConsole.Prompt(
-                            new TextPrompt<long>($"Enter first[{Settings.HeaderColor}] id[/] bound:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                        );
-                    long secondInput = AnsiConsole.Prompt(
-                            new TextPrompt<long>($"Enter second[{Settings.HeaderColor}] id[/] bound:")
-                            .PromptStyle(Settings.HeaderColor)
-                            .ValidationErrorMessage("That's not a valid value!")
-                            .Validate(s =>
-                            {
-                                if (s > firstInput)
-                                    return ValidationResult.Success();
-                                else
-                                    return ValidationResult.Error("First value greater than second!");
-                            })
-                        );
-                    Controller.PrintFullClassInfoByClassIdRange(firstInput, secondInput);
-                    AnsiConsole.Prompt(
-                        new TextPrompt<string>("Press to continue...").AllowEmpty()
-                    );
                     AnsiConsole.Clear();
-                    return SceneType.ClassMenu;
+                    return SceneType.StartMenu;
             };
         }
     }

@@ -1,9 +1,9 @@
-﻿using Npgsql;
+﻿using RGR.Dal;
 
 namespace RGR.MVC.UI
 {
     public interface ISceneBuilder
     {
-        IEnumerable<Scene> BuildScenes(UISettings settings, NpgsqlConnection connection);
+        IEnumerable<Scene> BuildScenes(UISettings settings, Lab2Context context);
     }
 }
